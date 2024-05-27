@@ -15,7 +15,7 @@
     <textarea v-show="!messagesStore.GameIsEnd" class="textarea textarea-primary  relative my-3 border h-30 " :disabled="isDisabled"
     
      @keyup.enter="inputSubmit" onKeyDown="textareaKeydown" v-model="inputStore.input" 
-    :maxlength="textAreaMaxLen" rows="3" cols="50" :placeholder="textAreaPlaceholder">
+    :maxlength="textAreaMaxLen" rows="2" cols="50" :placeholder="textAreaPlaceholder">
     <button class="btn btn-circle btn-outline hover:bg-primary sendButton absolute top-6 right-1" @click="inputSubmit">
         <img class="w-6 sendIcon" src="../assets/发送.svg"></img>
       </button>

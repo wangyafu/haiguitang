@@ -39,6 +39,9 @@
                 <span>
                 <ChatRounds/>
             </span>
+            <button class="btn btn-circle btn-outline hover:bg-primary " @click="inputSubmit">
+                <img class="w-6 sendIcon" src="../assets/发送.svg"></img>
+              </button>
                 
                 
                     
@@ -46,7 +49,27 @@
                 
                 </div>
 
-            <MyTextArea :getPromptTimes="getPromptTimes"   />
+                <dialog id="congratulation" class="modal">
+                    <div class="modal-box">
+                      <h3 class="font-bold text-lg" >恭喜你，通关了!</h3>
+                      <p class="py-4">{{congratulationText}}</p>
+                      <div class="modal-action">
+                        <form method="dialog">
+                          <!-- if there is a button in form, it will close the modal -->
+                          <button class="btn">Close</button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
+                
+                <textarea v-show="!messagesStore.GameIsEnd" class="textarea textarea-primary  relative my-3 border h-30 " :disabled="isDisabled"
+                
+                 @keyup.enter="inputSubmit" onKeyDown="textareaKeydown" v-model="inputStore.input" 
+                :maxlength="textAreaMaxLen" rows="2" cols="50" :placeholder="textAreaPlaceholder">
+                
+                </textarea>
+                
+                
         </div>
         <MyButtons v-show="messagesStore.GameIsEnd" />
         <ElDialog v-model="isDialogVisible" title="确定要获取提示吗">也许放弃提示，你能获得更棒的游戏体验。
@@ -62,7 +85,7 @@
 
 </template>
 <script setup lang="ts">
-import { ref, watch ,computed} from 'vue'
+import { ref, watch} from 'vue'
 import { useRoute } from 'vue-router'
 import {request} from '../assets/request'
 import { userInput } from '../stores/data'
@@ -72,10 +95,16 @@ import { openingRemarks } from '../assets/text'
 import ChatRounds  from './ChatRounds.vue'
 import MyButtons  from './MyButtons.vue';
 import MessageCard  from './MessageCard.vue';
-import MyTextArea from './MyTextArea.vue';
 import ContentCard  from './ContentCard.vue';
 import {useMessagesStore} from "../stores/messages"
-import {useCandidateStore} from "../stores/candidate"   
+import {useCandidateStore} from "../stores/candidate" 
+import { userMessageCounter } from '@/assets/counter'  
+import {useInputStore} from "../stores/data"
+import {usePuzzlesStore} from "../stores/puzzles"
+import {getPercentageStr  } from '../assets/utils'
+import Cookies from 'js-cookie'
+import { ElMessage } from 'element-plus'
+
 type PuzzleInfo={
     face: string,
     answerCount: number,
@@ -83,8 +112,19 @@ type PuzzleInfo={
     title:string,
     promptNum: number,
 }
+type MessageIn={
+    code:number,
+    aiContent:string,
+    num:number,
+    rate:number
+}
 const messagesStore = useMessagesStore()
 const candidateStore=useCandidateStore()
+const inputStore=useInputStore()
+const puzzlesStore=usePuzzlesStore()
+const textAreaPlaceholder = ref("快提出问题来验证你的猜想！当你认为自己已经猜到汤底时，请以“汤底”开始你对汤底的叙述。")
+const isDisabled = ref(false)
+const congratulationText = ref("")
 const inputStyle = {
     border: "solid black",
     borderRadius: "1vw",
@@ -94,11 +134,12 @@ const scrollbarRef = ref();
 const noPrompt = ref(false);
 const getPromptMessage = ref("已经获取了所有提示")
 
-const routeId = ref(useRoute().params.id)
+const routeId = useRoute().params.id
 messagesStore.refresh();
 const initMessageId = messagesStore.newMessage(false)
 const openRemark = openingRemarks[getRandomInt(0, openingRemarks.length - 1)]
 messagesStore.loadMessage(initMessageId, openRemark)
+const textAreaMaxLen=200
 let puzzleInit={
     face: "正在加载中，请稍候",
     answerCount: 0,
@@ -109,13 +150,87 @@ let puzzleInit={
 const puzzle = ref(puzzleInit)
 const isDialogVisible = ref(false)
 const getPromptTimes = ref(0)
-const isDisabled = ref(true)
 
 
 
 
+// 调用初始化方法
+userMessageCounter.init();
 
-request.get('/getPuzzle/' + routeId.value, {
+
+function textareaKeydown(){
+    if (inputStore.input.length >= textAreaMaxLen) {
+        inputStore.input = inputStore.input.substring(0, textAreaMaxLen)
+    }
+}
+
+function dealWithCode(resData:MessageIn){
+    
+    
+        const id=routeId
+        messagesStore.win()
+        document.getElementById("congratulation")?.showModal()
+        puzzlesStore.passPuzzle(Number(id as string))
+       
+        if (resData.code == 1) {
+            
+            congratulationText.value = `你是全球第${resData.num}位通关者！`
+            
+            if (resData.rate > 0.1) {
+                if(getPromptTimes.value!=0){
+                    congratulationText.value+=`你仅用了${getPromptTimes}个提示就通关了游戏，`
+                }
+                else{
+                    congratulationText.value+=`你没有使用提示就通关了游戏,`
+                }
+                congratulationText.value += `超越了全球${getPercentageStr(resData.rate)}的玩家。`
+            }
+
+        }
+}
+//获取messages
+
+function chat() {
+    
+    let messageId = messagesStore.newMessage(true)
+    messagesStore.loadMessage(messageId, inputStore.input)
+    inputStore.input = ""
+    isDisabled.value = true
+    let uuid=Cookies.get("uuid")
+    const toPost = { "messages": messagesStore.getRecentMessages(7), "getPromptTimes": getPromptTimes.value,"userUuid": uuid,chatRounds:0 }
+    toPost.chatRounds=messagesStore.chatRounds
+    
+    messageId = messagesStore.newMessage(false)
+    
+    request.post('/chat/' + String(routeId), toPost, {
+        withCredentials: true,
+    }).then(response=> {
+        const resData=response.data
+        messagesStore.loadMessage(messageId, resData.aiContent)
+        if (resData.code != 0) {
+            dealWithCode(resData)
+        }
+        
+        
+        candidateStore.getCandidate(Number(routeId as string))
+        
+    }).catch((err)=>console.log(err))
+    .finally(()=>{ isDisabled.value = false})
+}
+function inputSubmit(){
+    if(inputStore.input.trim().length==0){
+        ElMessage({ message: '输入不能为空！', type: "warning" })
+    }
+    else{
+    
+    userMessageCounter.sendMessage(chat)
+    }
+}
+
+
+
+
+request.get('/getPuzzle/' + routeId, {
     withCredentials: true,
 }).then(response => {
     puzzle.value = response.data
@@ -128,7 +243,7 @@ function clickCandidate() {
     
 }
 watch(() => messagesStore.messages.length, (newLength, oldLength) => {
-    console.log(newLength)
+    
     setTimeout(() => {
         scrollbarRef.value.scrollTop = scrollbarRef.value.scrollHeight
     }, 300)
@@ -154,7 +269,7 @@ function tryGetPrompt() {
 }
 function getPrompt() {
     let messageId = messagesStore.newMessage(false,true)
-    request.get('/getPrompt/' + String(routeId.value) + "/" + String(getPromptTimes.value), {
+    request.get('/getPrompt/' + String(routeId) + "/" + String(getPromptTimes.value), {
         withCredentials: true,
     }).then(response => {
         //MessageList.value.push({ "isHuman": false, "text": "提示:" + response.data.content, "id": MessageList.value.length  }) })
@@ -198,7 +313,9 @@ span{
     overflow-x: auto; /* 当内容溢出时显示水平滚动条 */
 }
 
-
+textarea{
+    width: 90%
+}
 
 
 
