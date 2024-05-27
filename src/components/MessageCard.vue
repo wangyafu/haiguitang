@@ -1,0 +1,71 @@
+<template>
+    <div class="md:ml-16 ml-3">
+    <div class="chat chat-start" v-if="!props.isHuman">
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="主持人头像" src="../assets/电脑.svg" />
+            </div>
+          </div>
+        <div class="chat-bubble chat-bubble-primary">{{props.text}}</div>
+      </div>
+      <div class="chat chat-end" v-if="props.isHuman">
+        <div class="chat-image avatar" >
+            <div class="w-10 rounded-full">
+              <img alt="用户头像" src="../assets/用户.svg" />
+            </div>
+          </div>
+        <div class="chat-bubble chat-bubble-info">{{props.text}}
+
+        </div>
+      </div>
+      </div>
+
+</template>
+<script setup lang="ts">
+import {ref} from 'vue';
+const props=defineProps({
+    isHuman:Boolean,
+    text:String,
+    isHorrible:Boolean,
+})
+
+const BaseImageUrl="../assets/"
+
+console.log(props.isHuman)
+const imageUrl=ref(BaseImageUrl+(props.isHuman?"用户":"电脑")+".svg")
+console.log(imageUrl.value)
+const backgroundColor=ref((props.isHuman?"black":"#DCDFE6"))
+
+
+
+
+</script>
+<style scoped>
+p{
+    font-size: 20px;
+    line-height: 1.2;
+    margin-left: 10px;
+}
+.card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top:10px;
+    padding-bottom: 10px;
+    padding-left: 13vw;
+    border-bottom: 1px solid #CDD0D6;
+}
+
+.isHuman{
+    background-color: #F5F7FA;
+}
+@media(max-width: 768px){
+p{
+    font-size: 16px;
+
+}
+.card{
+    padding-left: 5vw;
+}
+}
+</style>
