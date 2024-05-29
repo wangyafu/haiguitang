@@ -92,6 +92,18 @@ export const usePuzzlesStore = defineStore(
           console.error(error);
         });
     }
+  function passPuzzles(puzzlesId:Number[]):void{
+    const puzzlesSet=new Set(puzzlesId)
+    puzzlesRef.value.forEach((element: Puzzle) => {
+      if (element.puzzleId in puzzlesSet) {
+        if (element.isSuccess == false) {
+          element.isSuccess = true;
+          puzzleSuccessNum.value += 1;
+        }
+      }
+    });
+
+  }
 
   function passPuzzle(puzzleId:Number): void {
     puzzlesRef.value.forEach((element: Puzzle) => {
@@ -119,6 +131,6 @@ function findPuzzle(nowPuzzleId:Number){
     }
     return puzzleId
     }
-return { puzzlesRef, puzzleSuccessNum, compliantPuzzleNum, haveLoadPuzzles, getPuzzles, passPuzzle,findPuzzle }
+return { puzzlesRef, puzzleSuccessNum, compliantPuzzleNum, haveLoadPuzzles, getPuzzles, passPuzzle,passPuzzles,findPuzzle }
 }
 );

@@ -1,5 +1,5 @@
 <template>
-    <div class=" rounded bg-white  md:w-3/6 w-5/6 p-4  border">
+    <div class=" rounded-lg bg-white  md:w-3/6 w-5/6 p-4  border">
         <div class="cardHeader">
 
             <span class="font-medium"></span>

@@ -1,88 +1,80 @@
 <template>
-
-
-
-    <div class="max-w-full  bg-gray-50 flex flex-col items-center container" >
-
+    <!-- 主容器，设置宽度和背景色 -->
+    <div class="max-w-full bg-gray-50 flex flex-col items-center container" >
+        <!-- 通关恭喜对话框 -->
+        <dialog id="congratulation" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg" >恭喜你，通关了!</h3>
+                <p class="py-4">{{congratulationText}}</p>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn btn-primary">关闭</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+        <!-- 可滚动区域 -->
         <div class="scrollArea" ref="scrollbarRef" id="scrollArea">
-
+            <!-- 内容卡片组件，展示谜面 -->
             <ContentCard :face="puzzle.face" />
-
+            <!-- 消息卡片容器，用v-for循环渲染消息 -->
             <div class="w-full">
                 <MessageCard v-for="item in messagesStore.messages" :key="item.id" :text="item.text" :isHuman="item.isHuman"
                     :isHorrible="item.isHorrible ? true : false" v-loading="!item.haveLoaded">
                 </MessageCard>
+                <!-- 候选项卡片，点击触发候选项显示 -->
                 <div class="md:ml-16 ml-3 " @click="clickCandidate">
                     <div class="chat chat-start" v-show="candidateStore.shouldShow">
-                        
-                    <div class="chat-bubble bg-gray-200">{{candidateStore.candidate}}</div>
-                      </div>
-                      </div>
-
+                        <div class="chat-bubble bg-gray-200">{{candidateStore.candidate}}</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="absolute md:bottom-6  bottom-1 mt-5 md:mt-10 border-4
+        <!-- 底部输入区域，包含提示按钮、文本输入和提交按钮等 -->
+        <div class="absolute md:bottom-6 bottom-1 mt-5 md:mt-10 border-4
         rounded-xl pt-2 flex flex-col items-center md:w-3/6 
-        w-11/12 md:px-4 px-1  ">
+        w-11/12 md:px-4 px-1"  v-show="!messagesStore.GameIsEnd">
             <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12" v-show="!messagesStore.GameIsEnd">
+                <!-- 提示按钮，点击获取提示，显示剩余提示次数 -->
                 <button @click="tryGetPrompt" class="btn btn-primary text-white">来个提示  {{getPromptTimes }}/{{puzzle.promptNum }}
                     </button>
+                <!-- 查看汤面按钮，悬停显示汤面完整内容 -->
                 <el-popover placement="top" trigger="hover" width="400px" :content="puzzle.face" v-if="false">
                     <template #reference>
                         <button class="myButton">
                             <span>查看汤面</span></button>
                     </template>
                 </el-popover>
+                <!-- 汤底字数显示 -->
                 <span>
                     <ElText>汤底共{{ puzzle.answerCount }}字</ElText>
                 </span>
+                <!-- 聊天轮次组件 -->
                 <span>
                 <ChatRounds/>
             </span>
-            <button class="btn btn-circle btn-outline hover:bg-primary " @click="inputSubmit">
-                <img class="w-6 sendIcon" src="../assets/发送.svg"></img>
-              </button>
-                
-                
-                    
-                
-                
-                </div>
-
-                <dialog id="congratulation" class="modal">
-                    <div class="modal-box">
-                      <h3 class="font-bold text-lg" >恭喜你，通关了!</h3>
-                      <p class="py-4">{{congratulationText}}</p>
-                      <div class="modal-action">
-                        <form method="dialog">
-                          <!-- if there is a button in form, it will close the modal -->
-                          <button class="btn">Close</button>
-                        </form>
-                      </div>
-                    </div>
-                  </dialog>
-                
-                <textarea v-show="!messagesStore.GameIsEnd" class="textarea textarea-primary  relative my-3 border h-30 " :disabled="isDisabled"
-                
-                 @keyup.enter="inputSubmit" onKeyDown="textareaKeydown" v-model="inputStore.input" 
+                <!-- 提交按钮，点击提交输入 -->
+                <button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="inputSubmit" >
+                    <img class="w-6 sendIcon" src="../assets/发送.svg"></img>
+                </button>
+            </div>
+            
+            <!-- 输入区域，显示输入框，游戏未结束时可见 -->
+            <textarea v-show="!messagesStore.GameIsEnd" class="textarea textarea-primary  relative my-3 border " :disabled="isDisabled"
+                @keyup.enter="inputSubmit" onKeyDown="textareaKeydown" v-model="inputStore.input" 
                 :maxlength="textAreaMaxLen" rows="2" cols="50" :placeholder="textAreaPlaceholder">
-                
-                </textarea>
-                
-                
+            </textarea>
         </div>
+        <!-- 游戏结束按钮区域，游戏结束时显示 -->
         <MyButtons v-show="messagesStore.GameIsEnd" />
+        <!-- 提示对话框，点击按钮显示，确认获取提示 -->
         <ElDialog v-model="isDialogVisible" title="确定要获取提示吗">也许放弃提示，你能获得更棒的游戏体验。
             <template #footer>
                 <ElButton @click="() => { isDialogVisible = false }">取消</ElButton>
                 <ElButton type="primary" @click="getPrompt">确定</ElButton>
-
             </template>
         </ElDialog>
-
     </div>
-
-
 </template>
 <script setup lang="ts">
 import { ref, watch} from 'vue'
@@ -166,7 +158,7 @@ function textareaKeydown(){
 
 function dealWithCode(resData:MessageIn){
     
-    
+        console.log("dealwithcode")
         const id=routeId
         messagesStore.win()
         document.getElementById("congratulation")?.showModal()
@@ -218,6 +210,9 @@ function chat() {
     .finally(()=>{ isDisabled.value = false})
 }
 function inputSubmit(){
+    if(isDisabled.value){
+        return
+    }
     if(inputStore.input.trim().length==0){
         ElMessage({ message: '输入不能为空！', type: "warning" })
     }
@@ -238,7 +233,7 @@ request.get('/getPuzzle/' + routeId, {
 })
 
 function clickCandidate() {
-    userInput.value = candidateStore.candidate
+    inputStore.setInput(candidateStore.candidate)
     candidateStore.clear()
     
 }

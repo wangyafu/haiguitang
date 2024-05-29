@@ -1,4 +1,5 @@
-  export function getPercentageStr(decimalValue:number) {
+import {Md5} from 'ts-md5/dist/md5';
+ export function getPercentageStr(decimalValue:number) {
     const percentageValue = decimalValue * 100; // 将小数转换为百分比
     const formattedPercentage = percentageValue.toFixed(2); // 保留两位小数
   
@@ -31,4 +32,8 @@ else if(rate<0.3){
 else{
     return 1
 }
+}
+export function hash(text:string):string{
+  return Md5.hashStr(text+"haiguitang")
+
 }

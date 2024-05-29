@@ -48,3 +48,49 @@ export const useInputStore=defineStore("userInput",()=>{
   return {input,setInput,clear}
 }
 )
+export interface User{
+  
+  userName?: string
+  
+  registerDate?:string
+}
+export const useUserStore = defineStore(
+  'user',
+  () => {
+    // 是否登陆
+    const isLogin = ref<boolean>(false)
+    const Login = (): void => {
+      isLogin.value = true
+    }
+
+    const Logout = (): void => {
+      isLogin.value = false
+    }
+
+    // uuid值
+    const uuid = ref<string>('')
+    const setUuid = (resUuid: string) => {
+      uuid.value = resUuid
+    }
+
+
+    // 用户信息
+    const userInfo = ref<User>({})
+    const setUserInfo = (resUserInfo: User) => {
+      userInfo.value = resUserInfo
+    }
+    return {
+      isLogin,
+      Login,
+      Logout,
+      uuid,
+      setUuid,
+      userInfo,
+      setUserInfo
+  } 
+},
+{
+  // 网页端配置
+  persist: true,
+}
+  )

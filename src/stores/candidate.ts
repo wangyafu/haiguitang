@@ -21,6 +21,9 @@ export const useCandidateStore = defineStore('candidate', () => {
         else if(messagesStore.messages.length<3){
             return
         }
+        else if(messagesStore.GameIsEnd){
+            return
+        }
         const toSubmit = messagesStore.getRecentMessages(7)
     
         const toPost = { "messages": toSubmit}

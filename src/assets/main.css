@@ -16,6 +16,14 @@ body {
   box-sizing: border-box;
 }
 
+.myBtn{
+  background-color: rgb(236, 245, 255);
+  color:#409eff
 
 
+}
+
+.myBtn:hover{
+  border:solid #409eff 1px;
+}
 
