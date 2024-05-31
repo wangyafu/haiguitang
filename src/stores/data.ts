@@ -62,9 +62,11 @@ export const useUserStore = defineStore(
     const Login = (): void => {
       isLogin.value = true
     }
+    const userInfo = ref<User>({})
 
     const Logout = (): void => {
       isLogin.value = false
+      userInfo.value = {}
     }
 
     // uuid值
@@ -75,7 +77,7 @@ export const useUserStore = defineStore(
 
 
     // 用户信息
-    const userInfo = ref<User>({})
+    
     const setUserInfo = (resUserInfo: User) => {
       userInfo.value = resUserInfo
     }

@@ -5,26 +5,70 @@
   
         <span class=" cursor-pointer  text-xl hover:text-blue-400 " @click="goHome">独玩海龟汤</span>
         
-        <button class="myBtn  text-base px-2 py-1 font-normal rounded-lg " @click="()=>{emit('showLogin')}" v-show="!userStore.isLogin">登录/注册</button>
+        <button class="myBtn  text-base px-2 py-1 font-normal rounded-lg " v-show="!userStore.isLogin" @click="()=>{emit('showLogin')}" >登录/注册</button>
+        <div class="flex flex-row items-center space-x-2" v-show="userStore.isLogin">
+        <span class="text-xl" :style="dynamicNameColor" >{{userStore.userInfo.userName}}</span>
+        <button class="myBtn  text-base px-2 py-1 font-normal rounded-lg "  @click.prevent="userStore.Logout" >退出登录</button>
+        </div>
         
     </div>
 </div>
 </template>
 <script setup lang="ts">
-import {ref} from 'vue'
+import {onMounted, ref,computed} from 'vue'
 import router from "@/router"
 import {useUserStore} from "@/stores/data"
 import { request } from '../assets/request';
 import { usePuzzlesStore } from '@/stores/puzzles';
+import type {PuzzleIn} from '@/types/entity';
+
 const emit = defineEmits(['showLogin'])
 const puzzlesStore = usePuzzlesStore()
 const userStore=useUserStore()
 const showLogin=ref(false)
+const colors=["black","green","blue","purple","red"]
+const dynamicNameColor=computed(()=>{
+    let rate=puzzlesStore.puzzleSuccessNum/puzzlesStore.puzzlesRef.length
+    console.log(rate)
+    return {
+        color:colors[Math.floor(rate*colors.length)]
+    }
+})
+onMounted(()=>{
+    getUuid()
+    getPuzzles(userStore.uuid)
+    
+    
+    console.log(userStore.uuid)
+})
 //console.log(import.meta.env.VUE_APP_BASE_URL)
+function getPuzzles(uuid: string) {
+      
+      console.log(uuid)
+      request
+        .post(
+          "/getPuzzles",
+          {
+            userUuid: uuid,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+            puzzlesStore.setPuzzles(response.data as PuzzleIn[])
+        })
+        .catch((error) => {
+          console.error(error);
+          
+        });
+
+    }
 function goHome(){
     router.push("/")
 }
-if(userStore.uuid==""){
+function getUuid(){
+    if(userStore.uuid==""){
     request.get("/newUser",{
     withCredentials: true,}
 ).then((res)=>{
@@ -37,9 +81,12 @@ if(userStore.uuid==""){
 })
 
 }
-console.log(userStore.uuid)
+}
 
-puzzlesStore.getPuzzles(userStore.uuid)
+
+
+
+
 
 /*
 let value=Cookies.get("uuid")

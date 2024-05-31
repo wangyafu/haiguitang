@@ -83,7 +83,8 @@ function dealWithInfo(data:RegisterIn){
           registerDate:data.registerDate
           
         })
-        puzzlesStore.passPuzzles(data.passPuzzles)
+  userStore.Login()
+  puzzlesStore.passPuzzles(data.passPuzzles)
   emit("close")
 } 
 function Login(){
@@ -189,4 +190,4 @@ function Register(){
   left: 50%;
 }
 
-</style>
+</style>@/type/entity

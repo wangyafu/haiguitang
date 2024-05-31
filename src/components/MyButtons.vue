@@ -25,7 +25,7 @@ import { useMessagesStore } from '@/stores/messages'
 import router from "../router/index"
 import {request} from "../assets/request"
 import {ref, watch} from 'vue'
-import { ElIcon,ElButton,ElRate,ElNotification } from 'element-plus'
+import { ElIcon,ElButton,ElRate,ElNotification,ElMessage } from 'element-plus'
 
 const id=router.currentRoute.value.params.id
 const isDisabld=ref(false)
@@ -57,9 +57,10 @@ function goHome(){
     router.push('/')
 }
 function goNext(){
-    let findRes=puzzlesStore.findPuzzle(Number(id as string))
+    let findRes=puzzlesStore.findNextPuzzle(Number(id as string))
     
-    if(findRes==-1){
+    if(findRes<0){
+        ElMessage({type:'success',message:'你已经刷完了所有谜题!'})
         goHome()
     }
     else{

@@ -91,7 +91,7 @@ import ContentCard  from './ContentCard.vue';
 import {useMessagesStore} from "../stores/messages"
 import {useCandidateStore} from "../stores/candidate" 
 import { userMessageCounter } from '@/assets/counter'  
-import {useInputStore} from "../stores/data"
+import {useInputStore,useUserStore} from "../stores/data"
 import {usePuzzlesStore} from "../stores/puzzles"
 import {getPercentageStr  } from '../assets/utils'
 import Cookies from 'js-cookie'
@@ -114,6 +114,7 @@ const messagesStore = useMessagesStore()
 const candidateStore=useCandidateStore()
 const inputStore=useInputStore()
 const puzzlesStore=usePuzzlesStore()
+const userStore=useUserStore()
 const textAreaPlaceholder = ref("快提出问题来验证你的猜想！当你认为自己已经猜到汤底时，请以“汤底”开始你对汤底的叙述。")
 const isDisabled = ref(false)
 const congratulationText = ref("")
@@ -188,10 +189,11 @@ function chat() {
     messagesStore.loadMessage(messageId, inputStore.input)
     inputStore.input = ""
     isDisabled.value = true
-    let uuid=Cookies.get("uuid")
+    let uuid=userStore.uuid
     const toPost = { "messages": messagesStore.getRecentMessages(7), "getPromptTimes": getPromptTimes.value,"userUuid": uuid,chatRounds:0 }
     toPost.chatRounds=messagesStore.chatRounds
-    
+    console.log("chat")
+    console.log(toPost)
     messageId = messagesStore.newMessage(false)
     
     request.post('/chat/' + String(routeId), toPost, {
@@ -210,6 +212,7 @@ function chat() {
     .finally(()=>{ isDisabled.value = false})
 }
 function inputSubmit(){
+
     if(isDisabled.value){
         return
     }
@@ -218,7 +221,7 @@ function inputSubmit(){
     }
     else{
     
-    userMessageCounter.sendMessage(chat)
+    chat()
     }
 }
 

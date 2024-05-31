@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { request } from "../assets/request";
 import { topicList } from "./data";
+import type { PuzzleIn } from "@/types/entity"
 type PuzzleBase = {
   title: string;
   rank: number;
@@ -12,17 +13,7 @@ type PuzzleBase = {
   wholeTimes: number;
   tagContents: Array<string>;
 }
-type PuzzleIn = {
-  id: number;
-  title: string;
-  rank: number;
-  topic: number;
-  isSuccess:boolean;
-  successTimes: number;
-  wholeTimes: number;
-  tagContents: Array<string>;
-  
-}
+
 export type Puzzle = {
   puzzleId: number;
   title: string;
@@ -61,37 +52,21 @@ export const usePuzzlesStore = defineStore(
 
     }
   }
-    function getPuzzles(uuid: string) {
-      
-      console.log(uuid)
-      request
-        .post(
-          "/getPuzzles",
-          {
-            userUuid: uuid,
-          },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            const newData = response.data[i];
-            if (newData.isSuccess == true) {
-              puzzleSuccessNum.value += 1;
-            }
-            let newPuzzle = makePuzzle(newData as PuzzleIn);
+    function setPuzzles(puzzleData:PuzzleIn[]){
+      for (let i = 0; i < puzzleData.length; i++) {
+        const newData = puzzleData[i];
+        if (newData.isSuccess == true) {
+          puzzleSuccessNum.value += 1;
+        }
+        let newPuzzle = makePuzzle(newData as PuzzleIn);
 
-            puzzlesRef.value.push(newPuzzle);
-          }
+        puzzlesRef.value.push(newPuzzle);
+      }
 
-          compliantPuzzleNum.value = puzzlesRef.value.length;
-          haveLoadPuzzles.value = true;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      compliantPuzzleNum.value = puzzlesRef.value.length;
+      haveLoadPuzzles.value = true;
     }
+    
   function passPuzzles(puzzlesId:Number[]):void{
     const puzzlesSet=new Set(puzzlesId)
     puzzlesRef.value.forEach((element: Puzzle) => {
@@ -115,22 +90,19 @@ export const usePuzzlesStore = defineStore(
       }
     });
 }
-function findPuzzle(nowPuzzleId:Number){
+function findNextPuzzle(nowPuzzleId:number):number{
     let puzzles=puzzlesRef.value
     let puzzleId=-1
     let rate=0
     for(let i=0;i<puzzles.length;i++){
         
         if(puzzles[i].isSuccess==false && puzzles[i].puzzleId!=nowPuzzleId){
-            if(rate<puzzles[i].successTimes/(puzzles[i].wholeTimes+1)){
-                puzzleId=puzzles[i].puzzleId
-                rate=puzzles[i].successTimes/(puzzles[i].wholeTimes+1)
+        return puzzleId
+    }
+  }
+  return -1
+}
     
-            }
-        }
-    }
-    return puzzleId
-    }
-return { puzzlesRef, puzzleSuccessNum, compliantPuzzleNum, haveLoadPuzzles, getPuzzles, passPuzzle,passPuzzles,findPuzzle }
+return { puzzlesRef, puzzleSuccessNum, compliantPuzzleNum, haveLoadPuzzles, setPuzzles, passPuzzle,passPuzzles,findNextPuzzle }
 }
 );
