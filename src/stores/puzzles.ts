@@ -92,12 +92,12 @@ export const usePuzzlesStore = defineStore(
 }
 function findNextPuzzle(nowPuzzleId:number):number{
     let puzzles=puzzlesRef.value
-    let puzzleId=-1
+
     let rate=0
     for(let i=0;i<puzzles.length;i++){
         
         if(puzzles[i].isSuccess==false && puzzles[i].puzzleId!=nowPuzzleId){
-        return puzzleId
+        return puzzles[i].puzzleId
     }
   }
   return -1

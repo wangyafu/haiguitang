@@ -41,7 +41,12 @@ onMounted(()=>{
     
     console.log(userStore.uuid)
 })
-//console.log(import.meta.env.VUE_APP_BASE_URL)
+function tryGetPuzzles(uuid:string){
+    if(puzzlesStore.puzzlesRef.length==0){
+        getPuzzles(uuid)
+    }
+    return
+}
 function getPuzzles(uuid: string) {
       
       console.log(uuid)

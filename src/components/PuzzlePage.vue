@@ -204,6 +204,8 @@ function chat() {
         if (resData.code != 0) {
             dealWithCode(resData)
         }
+        candidateStore.clear()
+        candidateStore.getCandidate(Number(routeId as string))
         
         
         candidateStore.getCandidate(Number(routeId as string))
