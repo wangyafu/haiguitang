@@ -23,6 +23,7 @@ export type Puzzle = {
   successTimes: number;
   wholeTimes: number;
   tagContents: Array<string>;
+  position: number;
   
 }
 export const usePuzzlesStore = defineStore(
@@ -34,6 +35,7 @@ export const usePuzzlesStore = defineStore(
     const compliantPuzzleNum = ref(0);
     const haveLoadPuzzles = ref(false);
     const num=ref(0)
+    let nowPosition=1;
     function makePuzzle(puzzleData: PuzzleIn): Puzzle {
       puzzleData.tagContents.concat(
         puzzleData.topic ? [topicList.content[puzzleData.topic].text] : []
@@ -48,10 +50,13 @@ export const usePuzzlesStore = defineStore(
         successTimes: puzzleData.successTimes,
         wholeTimes: puzzleData.wholeTimes,
         tagContents:puzzleData.tagContents,
-
-
+        position:nowPosition++,
+      };
     }
-  }
+
+
+    
+  
     function setPuzzles(puzzleData:PuzzleIn[]){
       for (let i = 0; i < puzzleData.length; i++) {
         const newData = puzzleData[i];

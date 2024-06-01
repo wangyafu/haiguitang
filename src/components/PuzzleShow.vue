@@ -32,7 +32,7 @@ const onlyShowPassed=ref(false)
 const router = useRouter()
 console.log(puzzlesStore.puzzlesRef)
 function goPuzzle(){
-  let findRes=puzzlesStore.findPuzzle(-1)
+  let findRes=puzzlesStore.findNextPuzzle(-1)
   if(findRes==-1){
         ElMessage.error('没有可挑战的题目')
     }
@@ -65,10 +65,10 @@ const puzzleShouldShow = function (item:Puzzle,currentPage:number)  {
   
   let itemId
   if(isAllZero(dropdownSelected)){
-     itemId=item.puzzleId
+     itemId=item.position
   }
   else{
-      itemId=item.puzzleId
+      itemId=item.position
   }
   const pageAllowable1=(currentPage-1)*pageSize.value<=itemId
   const pageAllowable2=itemId<(currentPage)*pageSize.value
@@ -86,7 +86,7 @@ watch(dropdownSelected, () => {
     let itemState=Number(puzzlesStore.puzzlesRef[i].isSuccess)+1
     
     if(getDropdownAllowable(itemRank, itemTopic,itemState)){
-      
+      puzzlesStore.puzzlesRef[i].position=tempNum
       tempNum++
     }
     }

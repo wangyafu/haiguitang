@@ -14,13 +14,13 @@
             </div>
         </dialog>
         <!-- 可滚动区域 -->
-        <div class="scrollArea" ref="scrollbarRef" id="scrollArea">
+        <div class="flex flex-col overflow-y-scroll items-center myScroll mt-4 w-[100vw]" ref="scrollbarRef" id="scrollArea">
             <!-- 内容卡片组件，展示谜面 -->
             <ContentCard :face="puzzle.face" />
             <!-- 消息卡片容器，用v-for循环渲染消息 -->
             <div class="w-full">
                 <MessageCard v-for="item in messagesStore.messages" :key="item.id" :text="item.text" :isHuman="item.isHuman"
-                    :isHorrible="item.isHorrible ? true : false" v-loading="!item.haveLoaded">
+                    :isHorrible="item.isHorrible ? true : false" :is-loading="!item.haveLoaded">
                 </MessageCard>
                 <!-- 候选项卡片，点击触发候选项显示 -->
                 <div class="md:ml-16 ml-3 " @click="clickCandidate">
@@ -33,7 +33,7 @@
         <!-- 底部输入区域，包含提示按钮、文本输入和提交按钮等 -->
         <div class="absolute md:bottom-6 bottom-1 mt-5 md:mt-10 border-4
         rounded-xl pt-2 flex flex-col items-center md:w-3/6 
-        w-11/12 md:px-4 px-1"  v-show="!messagesStore.GameIsEnd">
+        w-11/12 md:px-4 px-1 "  v-show="!messagesStore.GameIsEnd">
             <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12" v-show="!messagesStore.GameIsEnd">
                 <!-- 提示按钮，点击获取提示，显示剩余提示次数 -->
                 <button @click="tryGetPrompt" class="btn btn-primary text-white">来个提示  {{getPromptTimes }}/{{puzzle.promptNum }}
@@ -292,17 +292,14 @@ function getPrompt() {
 span{
     font-size: 16px;
 }
-.scrollArea {
-    overflow-y: scroll;
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 0px;
-    width: 100vw;
-    height: 60vh;
+.myScroll{
+    height:65vh
 }
-
+@media( min-height:800px) {
+    .myScroll{
+        height:75vh
+    }
+}
 
 
 .buttonArea {

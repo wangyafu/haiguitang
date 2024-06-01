@@ -6,7 +6,7 @@
               <img alt="主持人头像" src="../assets/电脑.svg" />
             </div>
           </div>
-        <div class="chat-bubble chat-bubble-primary">{{props.text}}</div>
+        <div class="chat-bubble chat-bubble-primary text-white" v-loading="props.isLoading">{{props.text}}</div>
       </div>
       <div class="chat chat-end" v-if="props.isHuman">
         <div class="chat-image avatar" >
@@ -14,7 +14,7 @@
               <img alt="用户头像" src="../assets/用户.svg" />
             </div>
           </div>
-        <div class="chat-bubble chat-bubble-info">{{props.text}}
+        <div class="chat-bubble chat-bubble-info" v-loading="props.isLoading">{{props.text}}
 
         </div>
       </div>
@@ -27,6 +27,7 @@ const props=defineProps({
     isHuman:Boolean,
     text:String,
     isHorrible:Boolean,
+    isLoading:Boolean
 })
 
 const BaseImageUrl="../assets/"

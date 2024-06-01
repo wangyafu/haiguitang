@@ -5,7 +5,7 @@
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="closed=true">✕</button>
           </form>
           <h3 class="font-bold text-lg">更新公告</h3>
-          <p class="py-4">此次更新中，我们进一步优化了页面，同时增强了系统的稳定性，并增加了AI智能生成候选项的功能。</p>
+          <p class="py-4">此次更新中，我们进一步优化了页面，同时增强了系统的稳定性，并增加了AI智能生成候选项、为汤评分和登录/注册功能。</p>
         </div>
     </dialog>
 </template>
