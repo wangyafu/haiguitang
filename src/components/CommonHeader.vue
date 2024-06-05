@@ -36,7 +36,7 @@ const dynamicNameColor=computed(()=>{
 })
 onMounted(()=>{
     getUuid()
-    getPuzzles(userStore.uuid)
+    tryGetPuzzles(userStore.uuid)
     
     
     console.log(userStore.uuid)

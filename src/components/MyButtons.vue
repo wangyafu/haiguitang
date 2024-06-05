@@ -1,5 +1,5 @@
 <template>
-<div class="flex flex-col items-center absolute  space-y-7 container">
+<div class="flex flex-col items-center   space-y-7 container">
 <div class="flex flex-row items-center flex-wrap space-x-3" v-show="showRate" >
 <span>为谜题评分:</span>
 <ElRate v-model="rate" :show-text="false"  :texts="['极差', '差', '中等', '好', '妙极']"/>
@@ -102,7 +102,7 @@ function showAnswer(){
     width: 28vw;
 }
 .container{
-    bottom: 10vh;
+    bottom: 20px;
 }
 @media(max-width: 768px){
 .buttons{

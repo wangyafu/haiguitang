@@ -4,7 +4,8 @@
 
             <span class="font-medium"></span>
             <span class="font-medium">{{ face }}</span>
-            <span class="shareButton p-4">
+            
+            <span class="shareButton p-4" v-show="false">
                 <el-button :icon="Share" @click="ShareUrl" type="primary" plain="true">
                     分享
                 </el-button>

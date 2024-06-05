@@ -9,6 +9,7 @@ export interface RegisterIn{
 export interface LogOutInfo extends RegisterIn{
     uuid:string,
     
+    
 }
 
 export type PuzzleIn = {

@@ -1,14 +1,14 @@
 <!-- 点击后用户跳转的页面 -->
 <template>
 
-    <div class="relative  h-full" v-show="showThis">
+    <div class="relative  h-full z-10" v-show="showThis">
   
       <!-- 个人信息展示 -->
       <div class="absolute loginDiv  -translate-x-1/2 -translate-y-3/4 card lg:w-1/2 md:w-full  bg-base-100 shadow-2xl py-4 ">
         <div class="text-center">
           <h2 class="card-title  inline" v-show="!showRegister">登陆</h2>
           <h2 class="card-title  inline" v-show="showRegister">注册</h2>
-          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click.prevent="()=>{emit('close')}">✕</button>
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click.prevent="()=>{loginStore.show=false}">✕</button>
         </div>
   
         <div class="card-body  font-bold font-serif text-gray-500 items-center text-center">
@@ -29,7 +29,7 @@
             <el-form-item v-show="showRegister">
               <label class="input input-bordered flex items-center gap-1 w-full ">
                 再次输入密码:
-                <input type="text"class="grow" v-model="form.repeat" />
+                <input type="password"class="grow" v-model="form.repeat" />
               </label>
             </el-form-item>
   
@@ -59,6 +59,7 @@ import {hash} from "../assets/utils"
 import {request} from "../assets/request"
 import type {LogOutInfo,RegisterIn} from "@/entity/entity.d.ts"
 import {ref} from "vue"
+import {useLoginStore} from "@/stores/data"
 interface Form {
   userName: string;
   password: string;
@@ -72,7 +73,7 @@ let initForm: Form = {
 const form = reactive(
   initForm
 );
-const emit=defineEmits(["close"])
+const loginStore=useLoginStore()
 const userStore = useUserStore();
 const puzzlesStore=usePuzzlesStore()
 const showRegister=ref(false)
@@ -115,6 +116,7 @@ function Login(){
           type: "success",
         });
         userStore.setUuid(resData.uuid)
+        puzzleStore.passPuzzles(resData.passPuzzles)
         dealWithInfo(resData)
 
        

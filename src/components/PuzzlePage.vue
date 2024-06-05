@@ -1,6 +1,8 @@
 <template>
     <!-- 主容器，设置宽度和背景色 -->
-    <div class="max-w-full bg-gray-50 flex flex-col items-center container" >
+    <div class="max-w-full bg-gray-50 flex flex-col items-center container h-[100vh]" >
+        <CommonHeader @show-login="loginStore.show=true"></CommonHeader>
+        
         <!-- 通关恭喜对话框 -->
         <dialog id="congratulation" class="modal">
             <div class="modal-box">
@@ -25,13 +27,13 @@
                 <!-- 候选项卡片，点击触发候选项显示 -->
                 <div class="md:ml-16 ml-3 " @click="clickCandidate">
                     <div class="chat chat-start" v-show="candidateStore.shouldShow">
-                        <div class="chat-bubble bg-gray-200">{{candidateStore.candidate}}</div>
+                        <div class="chat-bubble bg-gray-200 text-primary">{{candidateStore.candidate}}</div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- 底部输入区域，包含提示按钮、文本输入和提交按钮等 -->
-        <div class="absolute md:bottom-6 bottom-1 mt-5 md:mt-10 border-4
+        <div class=" md:bottom-6 bottom-1 mt-5 md:mt-10 border-4
         rounded-xl pt-2 flex flex-col items-center md:w-3/6 
         w-11/12 md:px-4 px-1 "  v-show="!messagesStore.GameIsEnd">
             <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12" v-show="!messagesStore.GameIsEnd">
@@ -91,7 +93,7 @@ import ContentCard  from './ContentCard.vue';
 import {useMessagesStore} from "../stores/messages"
 import {useCandidateStore} from "../stores/candidate" 
 import { userMessageCounter } from '@/assets/counter'  
-import {useInputStore,useUserStore} from "../stores/data"
+import {useInputStore,useUserStore,useLoginStore} from "../stores/data"
 import {usePuzzlesStore} from "../stores/puzzles"
 import {getPercentageStr  } from '../assets/utils'
 import Cookies from 'js-cookie'
@@ -110,6 +112,7 @@ type MessageIn={
     num:number,
     rate:number
 }
+const loginStore=useLoginStore()
 const messagesStore = useMessagesStore()
 const candidateStore=useCandidateStore()
 const inputStore=useInputStore()
@@ -204,11 +207,11 @@ function chat() {
         if (resData.code != 0) {
             dealWithCode(resData)
         }
-        candidateStore.clear()
+        
         candidateStore.getCandidate(Number(routeId as string))
         
         
-        candidateStore.getCandidate(Number(routeId as string))
+        
         
     }).catch((err)=>console.log(err))
     .finally(()=>{ isDisabled.value = false})
@@ -293,12 +296,7 @@ span{
     font-size: 16px;
 }
 .myScroll{
-    height:65vh
-}
-@media( min-height:800px) {
-    .myScroll{
-        height:75vh
-    }
+    flex:1;
 }
 
 

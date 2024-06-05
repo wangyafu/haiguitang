@@ -1,5 +1,8 @@
 <template>
+  <CommonHeader @show-login="loginStore.show=true"></CommonHeader>
+  
   <div class="max-w-full  flex flex-col mx-0  mr-auto items-center">
+    
     <HomePageAlert />
     <div class="flex md:w-4/5  w-full flex-col  bg-gray-50 md:px-4 px-6">
       <div class="self-center md:w-2/5 w-full mx-2 my-2">
@@ -20,10 +23,13 @@
   <CommonFooter />
 </template>
 <script setup lang="ts">
+import {ref} from "vue"
 import HomePageAlert from './HomePageAlert.vue';
 import MyCollapse from './MyCollapse.vue';
 import PuzzleShow from './PuzzleShow.vue';
 import CommonFooter from './CommonFooter.vue';
+import  {useLoginStore} from "@/stores/data"
+const loginStore=useLoginStore()
 </script>
 <style scoped>
 p {

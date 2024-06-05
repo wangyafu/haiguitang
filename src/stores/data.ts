@@ -54,6 +54,13 @@ export interface User{
   
   registerDate?:string
 }
+export const useLoginStore=defineStore(
+  "login",
+  ()=>{
+    const show=ref<boolean>(false)
+    return {show}
+  }
+)
 export const useUserStore = defineStore(
   'user',
   () => {

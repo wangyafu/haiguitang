@@ -7,7 +7,7 @@ export default {
   },
   plugins: [daisyui,],
   daisyui: {
-    themes: ["light", "dark", "cupcake","retro","winter",
+    themes: ["light","dark",
 
     {
       mytheme:{
@@ -29,8 +29,8 @@ export default {
           
  "error": "#ffdee4",
 
-      }
-    }
+      },
+    },
     ],
   },
 }
