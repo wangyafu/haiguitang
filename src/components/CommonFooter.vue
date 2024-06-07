@@ -1,11 +1,15 @@
 <template>
     <div class="footer">
-        <ElLink href="https://beian.miit.gov.cn/#/Integrated/index" type="info" :underline=haveUnderline>备案号：豫ICP备2024061618号</ElLink>
+        <ElLink href="https://beian.miit.gov.cn/#/Integrated/index" type="info" :underline=false>豫ICP备2024061618号</ElLink>
+        <ElLink href="https://beian.mps.gov.cn/#/query/webSearch" type="info" :underline=false>
+            闽公网安备35021102002125号
+
+        </ElLink>
     </div>
+
 </template>
 <script setup lang="ts">
 import {ref} from 'vue'
-const haveUnderline=ref(false)
 </script>
 <style scoped>
 .footer {

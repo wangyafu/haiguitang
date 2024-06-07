@@ -9,8 +9,9 @@ export interface RegisterIn{
 export interface LogOutInfo extends RegisterIn{
     uuid:string,
     
+    
 }
-t
+
 export type PuzzleIn = {
     id: number;
     title: string;
@@ -22,3 +23,10 @@ export type PuzzleIn = {
     tagContents: Array<string>;
     
   }
+export type PuzzleInfo={
+    face: string;
+    answerCount: number;
+    topic: number;
+    title:string;
+    prompts: string[];
+}

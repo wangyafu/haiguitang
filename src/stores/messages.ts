@@ -20,13 +20,13 @@ export const useMessagesStore=defineStore("messages",()=>{
     const messages=ref<Message[]>([])
     const chatRounds=ref(0)
     const endIsHuman=ref(false)
-    const haveWin=ref(false)
+    const haveEnd=ref(false)
     const GameIsEnd=computed(
         ()=>{
-            return ((chatRounds.value>=maxChatRounds.value) && !endIsHuman.value)|| haveWin.value
+            return ((chatRounds.value>=maxChatRounds.value) && !endIsHuman.value)|| haveEnd.value
         })
-    function win(){
-        haveWin.value=true
+    function end(){
+        haveEnd.value=true
     }
     function newMessage(isHuman:boolean,isPrompt=false):number{
         let length=messages.value.length
@@ -51,7 +51,7 @@ export const useMessagesStore=defineStore("messages",()=>{
     function refresh(){
         messages.value=[]
         chatRounds.value=0
-        haveWin.value=false
+        haveEnd.value=false
     }
     function getRecentMessages(maxNum:number){
         const length=messages.value.length
@@ -72,5 +72,5 @@ export const useMessagesStore=defineStore("messages",()=>{
         }
         return recentMessages.reverse()
     }
-    return {messages,chatRounds,endIsHuman,newMessage,loadMessage,refresh,getRecentMessages,GameIsEnd,win}
+    return {messages,chatRounds,endIsHuman,newMessage,loadMessage,refresh,getRecentMessages,GameIsEnd,end}
 })

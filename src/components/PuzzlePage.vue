@@ -36,17 +36,12 @@
         <div class=" md:bottom-6 bottom-1 mt-5 md:mt-10 border-4
         rounded-xl pt-2 flex flex-col items-center md:w-3/6 
         w-11/12 md:px-4 px-1 "  v-show="!messagesStore.GameIsEnd">
-            <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12" v-show="!messagesStore.GameIsEnd">
+            <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12 flex-wrap" v-show="!messagesStore.GameIsEnd">
                 <!-- 提示按钮，点击获取提示，显示剩余提示次数 -->
-                <button @click="tryGetPrompt" class="btn btn-primary text-white">来个提示  {{getPromptTimes }}/{{puzzle.promptNum }}
+                <button @click="tryGetPrompt" class="btn btn-primary text-white">来个提示  {{getPromptTimes }}/{{puzzle.prompts.length }}
                     </button>
                 <!-- 查看汤面按钮，悬停显示汤面完整内容 -->
-                <el-popover placement="top" trigger="hover" width="400px" :content="puzzle.face" v-if="false">
-                    <template #reference>
-                        <button class="myButton">
-                            <span>查看汤面</span></button>
-                    </template>
-                </el-popover>
+               
                 <!-- 汤底字数显示 -->
                 <span>
                     <ElText>汤底共{{ puzzle.answerCount }}字</ElText>
@@ -56,9 +51,26 @@
                 <ChatRounds/>
             </span>
                 <!-- 提交按钮，点击提交输入 -->
-                <button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="inputSubmit" >
-                    <img class="w-6 sendIcon" src="../assets/发送.svg"></img>
+                <button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="inputSubmit" :disabled="isDisabled">
+                    <img class="w-6" src="../assets/发送.svg"></img>
                 </button>
+                <div class="dropdown dropdown-top">
+                    <div tabindex="0" role="button" class="mt-1"><button class="btn btn-circle btn-outline  hover:border-primary border-gray-400 hover:bg-white" @click="">
+                        <img class="w-6" src="../assets/更多.svg"></img>
+                        </button></div>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                      <li> <el-popover placement="top" trigger="hover" width="400px" :content="puzzle.face" >
+                        <template #reference>
+                            
+                        <span class="text-base">查看汤面</span>
+                        </template>
+                    </el-popover></li>
+                   <li @click="tryEndInAdvance">
+                    <span class="text-base">结束游戏</span></li>
+
+                    </ul>
+                  </div>
+                
             </div>
             
             <!-- 输入区域，显示输入框，游戏未结束时可见 -->
@@ -84,7 +96,7 @@ import { useRoute } from 'vue-router'
 import {request} from '../assets/request'
 import { userInput } from '../stores/data'
 import {  getRandomInt } from '../assets/utils'
-import { ElButton, ElDialog, ElNotification, ElText } from 'element-plus';
+import { ElButton, ElDialog, ElNotification, ElText,ElMessage,ElPopover,ElMessageBox} from 'element-plus';
 import { openingRemarks } from '../assets/text'
 import ChatRounds  from './ChatRounds.vue'
 import MyButtons  from './MyButtons.vue';
@@ -96,16 +108,9 @@ import { userMessageCounter } from '@/assets/counter'
 import {useInputStore,useUserStore,useLoginStore} from "../stores/data"
 import {usePuzzlesStore} from "../stores/puzzles"
 import {getPercentageStr  } from '../assets/utils'
-import Cookies from 'js-cookie'
-import { ElMessage } from 'element-plus'
 
-type PuzzleInfo={
-    face: string,
-    answerCount: number,
-    topic: number,
-    title:string,
-    promptNum: number,
-}
+import type {PuzzleInfo} from "@/types/entity"
+
 type MessageIn={
     code:number,
     aiContent:string,
@@ -131,17 +136,18 @@ const noPrompt = ref(false);
 const getPromptMessage = ref("已经获取了所有提示")
 
 const routeId = useRoute().params.id
+console.log(routeId)
 messagesStore.refresh();
 const initMessageId = messagesStore.newMessage(false)
 const openRemark = openingRemarks[getRandomInt(0, openingRemarks.length - 1)]
 messagesStore.loadMessage(initMessageId, openRemark)
 const textAreaMaxLen=200
-let puzzleInit={
+let puzzleInit: PuzzleInfo ={
     face: "正在加载中，请稍候",
     answerCount: 0,
     topic: 0,
     title: "",
-    promptNum: 0
+    prompts: [],
 }
 const puzzle = ref(puzzleInit)
 const isDialogVisible = ref(false)
@@ -159,14 +165,25 @@ function textareaKeydown(){
         inputStore.input = inputStore.input.substring(0, textAreaMaxLen)
     }
 }
+function tryEndInAdvance(){
+ElMessageBox.confirm('确定要提前结束游戏吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
 
-function dealWithCode(resData:MessageIn){
+}).then(() => {
+    messagesStore.end()
+})}
     
+function dealWithCode(resData:MessageIn){
+        if(resData.code===0){
+            return
+        }
         console.log("dealwithcode")
-        const id=routeId
-        messagesStore.win()
+        
+        messagesStore.end()
         document.getElementById("congratulation")?.showModal()
-        puzzlesStore.passPuzzle(Number(id as string))
+        puzzlesStore.passPuzzle(Number(routeId as string))
        
         if (resData.code == 1) {
             
@@ -199,14 +216,10 @@ function chat() {
     console.log(toPost)
     messageId = messagesStore.newMessage(false)
     
-    request.post('/chat/' + String(routeId), toPost, {
-        withCredentials: true,
-    }).then(response=> {
+    request.post('/chat/' + String(routeId), toPost).then(response=> {
         const resData=response.data
         messagesStore.loadMessage(messageId, resData.aiContent)
-        if (resData.code != 0) {
-            dealWithCode(resData)
-        }
+        
         
         candidateStore.getCandidate(Number(routeId as string))
         
@@ -218,9 +231,6 @@ function chat() {
 }
 function inputSubmit(){
 
-    if(isDisabled.value){
-        return
-    }
     if(inputStore.input.trim().length==0){
         ElMessage({ message: '输入不能为空！', type: "warning" })
     }
@@ -229,15 +239,11 @@ function inputSubmit(){
     chat()
     }
 }
-
-
-
-
 request.get('/getPuzzle/' + routeId, {
     withCredentials: true,
 }).then(response => {
-    puzzle.value = response.data
-    
+    puzzle.value = response.data as PuzzleInfo
+    console.log(puzzle.value)
 })
 
 function clickCandidate() {
@@ -245,7 +251,7 @@ function clickCandidate() {
     candidateStore.clear()
     
 }
-watch(() => messagesStore.messages.length, (newLength, oldLength) => {
+watch(() => messagesStore.messages.length, () => {
     
     setTimeout(() => {
         scrollbarRef.value.scrollTop = scrollbarRef.value.scrollHeight
@@ -255,35 +261,25 @@ watch(() => messagesStore.messages.length, (newLength, oldLength) => {
 
 
 function tryGetPrompt() {
-    if (getPromptTimes.value < puzzle.value.promptNum) {
-        isDisabled.value = true
+    if (getPromptTimes.value < puzzle.value.prompts.length) {
         isDialogVisible.value = true
-        isDisabled.value = false
     }
     else  {
         //messageList.value.push({ "isHuman": false, "text": "你已经获取了所有提示哦,请开动脑筋吧！", "id": MessageList.value.length })
         noPrompt.value = true
-        ElNotification({
-            title: '已获取所有提示',
-            type: 'warning',
-            duration: 3000,
-        })
+        ElNotification({title: '已获取所有提示',type: 'warning',duration: 3000})
     }
 }
 function getPrompt() {
     let messageId = messagesStore.newMessage(false,true)
-    request.get('/getPrompt/' + String(routeId) + "/" + String(getPromptTimes.value), {
-        withCredentials: true,
-    }).then(response => {
-        //MessageList.value.push({ "isHuman": false, "text": "提示:" + response.data.content, "id": MessageList.value.length  }) })
-
+    
         let isHorrible = puzzle.value.topic == 1
 
-        messagesStore.loadMessage(messageId, response.data.content, isHorrible)
+        messagesStore.loadMessage(messageId, puzzle.value.prompts[getPromptTimes.value], isHorrible)
         getPromptTimes.value += 1
         isDialogVisible.value = false
-    })
-}
+    }
+
 
 </script>
 

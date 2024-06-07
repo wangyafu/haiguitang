@@ -18,7 +18,8 @@ const closed=ref(false)
 const announcementStore=useAnnouncementStore()
 
 onMounted(()=>{
-    if((!closed)&&(!announcementStore.haveShow)){
+  console.log(announcementStore.haveShow)
+    if((!closed.value)&&(!announcementStore.haveShow)){
     my_modal_1.showModal()
 }
 })

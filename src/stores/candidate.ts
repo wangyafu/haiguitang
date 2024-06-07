@@ -24,9 +24,9 @@ export const useCandidateStore = defineStore('candidate', () => {
         else if(messagesStore.GameIsEnd){
             return
         }
-        const toSubmit = messagesStore.getRecentMessages(7)
     
-        const toPost = { "messages": toSubmit}
+    
+        const toPost = { "messages": messagesStore.getRecentMessages(9)}
         
         
         request.post( '/candidate/' + String(routeId), toPost, {

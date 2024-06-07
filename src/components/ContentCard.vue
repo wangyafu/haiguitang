@@ -1,16 +1,32 @@
 <template>
     <div class=" rounded-lg bg-white  md:w-3/6 w-5/6 p-4  border">
-        <div class="cardHeader">
+        <div>
 
-            <span class="font-medium"></span>
-            <span class="font-medium">{{ face }}</span>
+            <span class="font-medium text-base"></span>
+            <span class="font-medium text-base">{{ face }}</span>
             
-            <span class="shareButton p-4" v-show="false">
+            <span class="shareButton p-4" v-show="true">
                 <el-button :icon="Share" @click="ShareUrl" type="primary" plain="true">
                     分享
                 </el-button>
                 
             </span>
+        </div>
+        <div class="text-xl">
+            <ElCollapse v-model="activeName">
+                <ElCollapseItem name="instruction">
+                    <ul class="text-base">
+                        <li>1.游戏结束后，您可以查看汤底。</li>
+                        <li>2.清晰完整的表述，有助于主持人给出更准确的回答。</li>
+                    </ul>
+                    <template #title>
+                        <div class="text-xl font-semibold">
+                            <p>规则介绍</p>
+                        </div>
+                    </template>
+    
+                </ElCollapseItem>
+            </ElCollapse>
         </div>
 
         
@@ -22,7 +38,7 @@ import { ruleIntroduction } from '../assets/text.js';
 import { Share } from '@element-plus/icons-vue';
 import { useRoute } from 'vue-router'
 import { ElMessage,ElNotification } from 'element-plus';
-import  {BaseUrl} from '../assets/request'
+import  {DomainUrl} from '../assets/request'
 const ruleIntroductionRef = ref(ruleIntroduction);
 const props = defineProps({
     face: String,
@@ -30,7 +46,7 @@ const props = defineProps({
 const activeName = ref('instruction');
 const id = useRoute().params.id
 const maxChatRounds = ref(25)
-const Url=BaseUrl+"/puzzles/"+String(id)
+const Url=DomainUrl+"/puzzles/"+String(id)
 function copyToClipboard(text:string) {
     // 检查浏览器是否支持 Clipboard API
     if (!navigator.clipboard) {
