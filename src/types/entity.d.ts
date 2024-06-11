@@ -21,6 +21,7 @@ export type PuzzleIn = {
     successTimes: number;
     wholeTimes: number;
     tagContents: Array<string>;
+    shortFace: string|undefined;
     
   }
 export type PuzzleInfo={

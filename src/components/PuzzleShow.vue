@@ -6,7 +6,8 @@
   
   <div class="space-y-5 pt-7">
     <PuzzleCard v-for="item in puzzlesStore.puzzlesRef" :key="item.puzzleId" :tags="item.tagContents" :isSuccess="item.isSuccess"
-      :title="item.title" :id="item.puzzleId" v-show="puzzleShouldShow(item,currentPage)" :wholeTimes="item.wholeTimes" :successTimes="item.successTimes" />
+      :title="item.title" :id="item.puzzleId" v-show="puzzleShouldShow(item,currentPage)" :wholeTimes="item.wholeTimes" :successTimes="item.successTimes"
+      :short-face="item.shortFace" />
   </div>
   <div class="paginationContainer">
   
@@ -16,13 +17,11 @@
 </template>
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { dropdownSelected,dropdownList} from "../stores/data"
-import {currentPage} from "../stores/data"
-import {usePuzzlesStore} from "../stores/puzzles"
-import type {Puzzle} from "../stores/puzzles"
+import { dropdownSelected,dropdownList,usePuzzlesStore,currentPage} from "../stores"
+import type {Puzzle} from "../stores"
 import {getPuzzleRank,getRate} from "../assets/utils.js"
 import { useRouter } from 'vue-router'
-import { ElSwitch,ElMessage } from 'element-plus'
+import {ElMessage } from 'element-plus'
 import MyDropdown from './MyDropdown.vue'
 import PuzzleCard from './PuzzleCard.vue'
 const puzzlesStore=usePuzzlesStore()
@@ -30,7 +29,7 @@ const dropdownListRef=ref(dropdownList)
 const pageSize=ref(10)
 const onlyShowPassed=ref(false)
 const router = useRouter()
-console.log(puzzlesStore.puzzlesRef)
+
 function goPuzzle(){
   let findRes=puzzlesStore.findNextPuzzle(-1)
   if(findRes==-1){
@@ -106,4 +105,4 @@ watch(dropdownSelected, () => {
   flex-direction: column;
   align-items: center;
 }
-</style>
+</style>../stores/modules/puzzles../stores/modules/puzzles

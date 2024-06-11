@@ -18,7 +18,7 @@
 </style>
 <script setup lang="ts">
 import {ref} from 'vue';
-import { dropdownSelected,currentPage } from '../stores/data'
+import { dropdownSelected,currentPage } from '../stores'
 const props=defineProps<{
   text:string,
   name:string,

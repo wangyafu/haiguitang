@@ -32,9 +32,9 @@ const props=defineProps({
 
 const BaseImageUrl="../assets/"
 
-console.log(props.isHuman)
+
 const imageUrl=ref(BaseImageUrl+(props.isHuman?"用户":"电脑")+".svg")
-console.log(imageUrl.value)
+
 const backgroundColor=ref((props.isHuman?"black":"#DCDFE6"))
 
 

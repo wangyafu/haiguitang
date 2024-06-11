@@ -1,7 +1,7 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
-import { request } from "../assets/request";
+import { request } from "../../assets/request";
 import { topicList } from "./data";
 import type { PuzzleIn } from "@/types/entity"
 type PuzzleBase = {
@@ -24,6 +24,7 @@ export type Puzzle = {
   wholeTimes: number;
   tagContents: Array<string>;
   position: number;
+  shortFace:string;
   
 }
 export const usePuzzlesStore = defineStore(
@@ -51,6 +52,9 @@ export const usePuzzlesStore = defineStore(
         wholeTimes: puzzleData.wholeTimes,
         tagContents:puzzleData.tagContents,
         position:nowPosition++,
+        shortFace:puzzleData.shortFace?puzzleData.shortFace:"",
+        
+      
       };
     }
 

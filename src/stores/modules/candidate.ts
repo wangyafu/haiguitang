@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import {request} from '../assets/request'
+import {request} from '@/assets/request'
 import { useMessagesStore } from './messages'
 export const useCandidateStore = defineStore('candidate', () => {
     const candidate = ref('')
@@ -14,7 +14,7 @@ export const useCandidateStore = defineStore('candidate', () => {
         return candidate.value = ''
     }
     function getCandidate(routeId:number){
-        console.log("被调动了")
+       
         if (candidate.value.length > 0) {
             return
         }
@@ -33,7 +33,7 @@ export const useCandidateStore = defineStore('candidate', () => {
             withCredentials: true,
         }).then(response => {
             candidate.value = response.data.content
-            console.log(response.data)
+       
             haveCandidate.value=true
         }).catch(err=>console.log(err))
     }

@@ -71,7 +71,7 @@ function goNext(){
     }
 }
 function showAnswer(){
-    console.log("被点击了")
+   
     let messageId=messagesStore.newMessage(false)
     showRate.value=true
     request.post('/getAnswer/'+String(id)).then(res=>{
@@ -109,4 +109,4 @@ function showAnswer(){
         width: 50vw;
     }
 }
-</style>
+</style>@/stores/modules/messages@/stores/modules/puzzles

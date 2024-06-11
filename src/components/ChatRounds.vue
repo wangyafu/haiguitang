@@ -35,4 +35,4 @@ const chatRoundsType = computed(()=>{
     
 }
 
-</style>
+</style>@/stores/modules/messages

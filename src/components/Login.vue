@@ -51,15 +51,13 @@
   </template>
 <script setup lang="ts">
 
-import { useUserStore } from "@/stores/data"
-import {usePuzzlesStore} from "@/stores/puzzles"
 import { reactive,toRaw } from "vue";
 import { ElMessage } from "element-plus";
 import {hash} from "../assets/utils"
 import {request} from "../assets/request"
-import type {LogOutInfo,RegisterIn} from "@/entity/entity.d.ts"
+import type {LogOutInfo,RegisterIn} from "@/types/entity.d.ts"
 import {ref} from "vue"
-import {useLoginStore} from "@/stores/data"
+import {useLoginStore,useUserStore,usePuzzlesStore} from "@/stores"
 interface Form {
   userName: string;
   password: string;
@@ -70,6 +68,7 @@ let initForm: Form = {
   password: "",
   
 };
+const emit=defineEmits(["close"])
 const form = reactive(
   initForm
 );
@@ -110,13 +109,13 @@ function Login(){
         });
       }
       else{
-        console.log("登陆成功")
+        
         ElMessage({
           message: `欢迎回来，亲爱的${form.userName}`,
           type: "success",
         });
         userStore.setUuid(resData.uuid)
-        puzzleStore.passPuzzles(resData.passPuzzles)
+        puzzlesStore.passPuzzles(resData.passPuzzles)
         dealWithInfo(resData)
 
        
@@ -132,7 +131,7 @@ function goToRegiter(){
 }
 function Register(){
   let copyForm={...toRaw(form)}
-  console.log("")
+  
   if(!copyForm.repeat){
     console.log("出错了")
     return
@@ -192,4 +191,4 @@ function Register(){
   left: 50%;
 }
 
-</style>@/type/entity
+</style>@/type/entity@/stores/modules/puzzles

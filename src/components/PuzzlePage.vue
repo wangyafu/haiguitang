@@ -94,7 +94,6 @@
 import { ref, watch} from 'vue'
 import { useRoute } from 'vue-router'
 import {request} from '../assets/request'
-import { userInput } from '../stores/data'
 import {  getRandomInt } from '../assets/utils'
 import { ElButton, ElDialog, ElNotification, ElText,ElMessage,ElPopover,ElMessageBox} from 'element-plus';
 import { openingRemarks } from '../assets/text'
@@ -102,11 +101,8 @@ import ChatRounds  from './ChatRounds.vue'
 import MyButtons  from './MyButtons.vue';
 import MessageCard  from './MessageCard.vue';
 import ContentCard  from './ContentCard.vue';
-import {useMessagesStore} from "../stores/messages"
-import {useCandidateStore} from "../stores/candidate" 
+import {useMessagesStore,useCandidateStore,useInputStore,useUserStore,useLoginStore,usePuzzlesStore,userInput} from "../stores"
 import { userMessageCounter } from '@/assets/counter'  
-import {useInputStore,useUserStore,useLoginStore} from "../stores/data"
-import {usePuzzlesStore} from "../stores/puzzles"
 import {getPercentageStr  } from '../assets/utils'
 
 import type {PuzzleInfo} from "@/types/entity"
@@ -136,7 +132,7 @@ const noPrompt = ref(false);
 const getPromptMessage = ref("已经获取了所有提示")
 
 const routeId = useRoute().params.id
-console.log(routeId)
+
 messagesStore.refresh();
 const initMessageId = messagesStore.newMessage(false)
 const openRemark = openingRemarks[getRandomInt(0, openingRemarks.length - 1)]
@@ -179,7 +175,7 @@ function dealWithCode(resData:MessageIn){
         if(resData.code===0){
             return
         }
-        console.log("dealwithcode")
+        
         
         messagesStore.end()
         document.getElementById("congratulation")?.showModal()
@@ -212,8 +208,8 @@ function chat() {
     let uuid=userStore.uuid
     const toPost = { "messages": messagesStore.getRecentMessages(7), "getPromptTimes": getPromptTimes.value,"userUuid": uuid,chatRounds:0 }
     toPost.chatRounds=messagesStore.chatRounds
-    console.log("chat")
-    console.log(toPost)
+    
+   
     messageId = messagesStore.newMessage(false)
     
     request.post('/chat/' + String(routeId), toPost).then(response=> {
@@ -243,7 +239,7 @@ request.get('/getPuzzle/' + routeId, {
     withCredentials: true,
 }).then(response => {
     puzzle.value = response.data as PuzzleInfo
-    console.log(puzzle.value)
+   
 })
 
 function clickCandidate() {
@@ -343,3 +339,4 @@ textarea{
 
 
 
+../stores/modules/messages../stores/modules/puzzles

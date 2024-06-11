@@ -28,7 +28,7 @@ import HomePageAlert from './HomePageAlert.vue';
 import MyCollapse from './MyCollapse.vue';
 import PuzzleShow from './PuzzleShow.vue';
 import CommonFooter from './CommonFooter.vue';
-import  {useLoginStore} from "@/stores/data"
+import  {useLoginStore} from "@/stores"
 const loginStore=useLoginStore()
 </script>
 <style scoped>

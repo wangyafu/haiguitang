@@ -39,7 +39,7 @@ export const userMessageCounter: {
     // 方法：检查是否超过限额并给出警告
     checkLimitAndWarn: function (): number {
       // 输出当前次数
-      console.log(`当前已发送消息次数: ${this.count}`);
+      
       
       if (this.count >= this.limit) {
         // 假设ElMessage是一个外部可用的函数，这里需要其定义或类型声明

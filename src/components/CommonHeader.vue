@@ -17,9 +17,8 @@
 <script setup lang="ts">
 import {onMounted, ref,computed} from 'vue'
 import router from "@/router"
-import {useUserStore} from "@/stores/data"
+import {useUserStore,usePuzzlesStore} from "@/stores"
 import { request } from '../assets/request';
-import { usePuzzlesStore } from '@/stores/puzzles';
 import type {PuzzleIn} from '@/types/entity';
 
 const emit = defineEmits(['showLogin'])
@@ -29,7 +28,7 @@ const showLogin=ref(false)
 const colors=["black","green","blue","purple","red"]
 const dynamicNameColor=computed(()=>{
     let rate=puzzlesStore.puzzleSuccessNum/puzzlesStore.puzzlesRef.length
-    console.log(rate)
+   
     return {
         color:colors[Math.floor(rate*colors.length)]
     }
@@ -39,7 +38,7 @@ onMounted(()=>{
     tryGetPuzzles(userStore.uuid)
     
     
-    console.log(userStore.uuid)
+   
 })
 function tryGetPuzzles(uuid:string){
     if(puzzlesStore.puzzlesRef.length==0){
@@ -49,7 +48,7 @@ function tryGetPuzzles(uuid:string){
 }
 function getPuzzles(uuid: string) {
       
-      console.log(uuid)
+      
       request
         .post(
           "/getPuzzles",
@@ -122,4 +121,4 @@ else{
     
 }
 
-</style>
+</style>@/stores/modules/puzzles
