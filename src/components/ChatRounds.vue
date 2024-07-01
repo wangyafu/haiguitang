@@ -10,7 +10,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useMessagesStore ,maxChatRounds} from '@/stores/messages';
+import { useMessagesStore ,maxChatRounds} from '@/stores';
 const messagesStore=useMessagesStore()
 const typeList = ["success", "warning", "danger"]
 const chatRoundsType = computed(()=>{

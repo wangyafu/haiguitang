@@ -1,6 +1,6 @@
 import {ref,computed} from 'vue'
 import { defineStore } from "pinia";
-
+import type{MessageOut} from "@/types/entity"
 type Message={
     isHuman: boolean,
     isPrompt: boolean, 
@@ -9,11 +9,7 @@ type Message={
     text:string,
     isHorrible:boolean
 }
-type MessageOut={
-    role:string,
-    content:string,
-    
-}
+
 
 export const maxChatRounds=ref(25)
 export const useMessagesStore=defineStore("messages",()=>{
@@ -53,11 +49,14 @@ export const useMessagesStore=defineStore("messages",()=>{
         chatRounds.value=0
         haveEnd.value=false
     }
-    function getRecentMessages(maxNum:number){
+    function getRecentMessages(maxNum:number,addFirst=false){
         const length=messages.value.length
         let num=0
         let p=length-1
         let recentMessages:MessageOut[]=[]
+        if(addFirst){
+            recentMessages.push({"content":messages.value[0].text,"role":"assitant"})
+        }
         while(num<maxNum){
             if(p==0){
                 break

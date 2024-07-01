@@ -1,9 +1,9 @@
 import { ref,reactive } from 'vue'
 import { defineStore } from "pinia";
 
-const difficultyRanksContent = [{ "text": "不限", "id": 0, "position": 0 }, { "text": "简单", "id": 1, "position": 1 }, { "text": "中等", "id": 2, "position": 2 }, { "text": "困难", "id": 3, "position": 3 }] 
-const topicListContent = [{ "text": "不限", "id": 0, "position": 0 }, { "text": "恐怖", "id": 1, "position": 1 }, { "text": "日常", "id": 2, "position": 2 }]
-const  stateListContent=[{ "text": "不限", "id": 0, "position": 0 }, { "text": "未通关", "id": 1, "position": 1 }, { "text": "已通关", "id": 2, "position": 2 }]
+const difficultyRanksContent = [{ "text": "不限", "position": 0 }, { "text": "简单", "position": 1 }, { "text": "中等", "position": 2 }, { "text": "困难", "position": 3 }] 
+const topicListContent = [{ "text": "不限", "position": 0 }, { "text": "恐怖", "position": 1 }, { "text": "日常", "position": 2 }]
+const  stateListContent=[{ "text": "不限", "position": 0 }, { "text": "未通关", "position": 1 }, { "text": "已通关", "position": 2 }]
 export const difficultyRanks={"text":"难度","name":"rank","content":difficultyRanksContent}
 export  const  topicList={"text":"主题","name":"topic","content":topicListContent}
 export const stateList={"text":"状态","name":"state","content":stateListContent}

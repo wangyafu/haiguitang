@@ -25,9 +25,10 @@
                     :isHorrible="item.isHorrible ? true : false" :is-loading="!item.haveLoaded">
                 </MessageCard>
                 <!-- 候选项卡片，点击触发候选项显示 -->
-                <div class="md:ml-16 ml-3 " @click="clickCandidate">
-                    <div class="chat chat-start" v-show="candidateStore.shouldShow">
-                        <div class="chat-bubble bg-gray-200 text-primary">{{candidateStore.candidate}}</div>
+
+                <div class="md:ml-16 ml-3 "  v-for="(item,index) in candidateStore.candidate" >
+                    <div class="chat chat-start" v-show="candidateStore.shouldShow" @click="clickCandidate(index)">
+                        <div class="chat-bubble bg-gray-200 text-primary">{{item}}</div>
                     </div>
                 </div>
             </div>
@@ -62,11 +63,11 @@
                       <li> <el-popover placement="top" trigger="hover" width="400px" :content="puzzle.face" >
                         <template #reference>
                             
-                        <span class="text-base">查看汤面</span>
+                        <span class="text-base hover:text-primary">查看汤面</span>
                         </template>
                     </el-popover></li>
                    <li @click="tryEndInAdvance">
-                    <span class="text-base">结束游戏</span></li>
+                    <span class="text-base hover:text-primary">结束游戏</span></li>
 
                     </ul>
                   </div>
@@ -91,9 +92,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, watch} from 'vue'
+import { onMounted, ref, watch} from 'vue'
 import { useRoute } from 'vue-router'
-import {request} from '../assets/request'
+import {request,websocketUrl} from '../assets/request'
 import {  getRandomInt } from '../assets/utils'
 import { ElButton, ElDialog, ElNotification, ElText,ElMessage,ElPopover,ElMessageBox} from 'element-plus';
 import { openingRemarks } from '../assets/text'
@@ -105,7 +106,7 @@ import {useMessagesStore,useCandidateStore,useInputStore,useUserStore,useLoginSt
 import { userMessageCounter } from '@/assets/counter'  
 import {getPercentageStr  } from '../assets/utils'
 
-import type {PuzzleInfo} from "@/types/entity"
+import type {PuzzleInfo,CandidateOutWithStream,CandidateInWithStream} from "@/types/entity"
 
 type MessageIn={
     code:number,
@@ -217,7 +218,12 @@ function chat() {
         messagesStore.loadMessage(messageId, resData.aiContent)
         
         
-        candidateStore.getCandidate(Number(routeId as string))
+        dealwithWebsocket({
+            "messages":messagesStore.getRecentMessages(9),
+            "chatRounds":messagesStore.chatRounds
+            
+        })
+        dealWithCode(resData as MessageIn)
         
         
         
@@ -235,6 +241,27 @@ function inputSubmit(){
     chat()
     }
 }
+function dealwithWebsocket(message:CandidateOutWithStream){
+    
+    const ws=new WebSocket(websocketUrl+"/ws/candidate/"+routeId)
+    console.log(`尝试建立websocket连接${websocketUrl+"/ws/candidate/"+routeId}`)
+    ws.onopen=()=>{
+        console.log("成功建立websocket连接")
+        candidateStore.clear()
+        ws.send(JSON.stringify(message))
+    }
+    ws.onmessage=function(event){
+        const resData=JSON.parse(event.data)
+        console.log("收到了消息")
+        candidateStore.setCandidate(resData as CandidateInWithStream)
+        console.log(resData)
+        console.log(candidateStore.candidate)
+    }
+    ws.onclose=()=>{
+        console.log("websocket连接关闭")
+    }
+    
+}
 request.get('/getPuzzle/' + routeId, {
     withCredentials: true,
 }).then(response => {
@@ -242,8 +269,8 @@ request.get('/getPuzzle/' + routeId, {
    
 })
 
-function clickCandidate() {
-    inputStore.setInput(candidateStore.candidate)
+function clickCandidate(index:number) {
+    inputStore.setInput(candidateStore.candidate[index])
     candidateStore.clear()
     
 }
@@ -276,7 +303,11 @@ function getPrompt() {
         isDialogVisible.value = false
     }
 
-
+onMounted(() => {
+    dealwithWebsocket({
+        "messages":messagesStore.getRecentMessages(9,true),
+        "chatRounds":messagesStore.chatRounds
+    })})
 </script>
 
 

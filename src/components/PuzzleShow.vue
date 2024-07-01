@@ -62,15 +62,9 @@ const puzzleShouldShow = function (item:Puzzle,currentPage:number)  {
   let itemTopic=item.topic
   let dropdownAllowable=getDropdownAllowable(itemRank, itemTopic,Number(item.isSuccess)+1)
   
-  let itemId
-  if(isAllZero(dropdownSelected)){
-     itemId=item.position
-  }
-  else{
-      itemId=item.position
-  }
-  const pageAllowable1=(currentPage-1)*pageSize.value<=itemId
-  const pageAllowable2=itemId<(currentPage)*pageSize.value
+  
+  const pageAllowable1=(currentPage-1)*pageSize.value<= item.position
+  const pageAllowable2=item.position<(currentPage)*pageSize.value
   return dropdownAllowable&&pageAllowable1&&pageAllowable2
 }
 

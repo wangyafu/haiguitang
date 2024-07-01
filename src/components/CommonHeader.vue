@@ -72,6 +72,7 @@ function goHome(){
     router.push("/")
 }
 function getUuid(){
+    
     if(userStore.uuid==""){
     request.get("/newUser",{
     withCredentials: true,}

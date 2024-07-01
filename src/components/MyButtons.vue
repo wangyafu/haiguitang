@@ -20,8 +20,7 @@
 </template>
 <script setup lang="ts">
 import { ArrowRight} from '@element-plus/icons-vue'
-import { usePuzzlesStore } from '@/stores/puzzles'
-import { useMessagesStore } from '@/stores/messages'
+import { usePuzzlesStore,useMessagesStore } from '@/stores'
 import router from "../router/index"
 import {request} from "../assets/request"
 import {ref, watch} from 'vue'

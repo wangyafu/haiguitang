@@ -3,7 +3,7 @@
         <ElText>{{dropdownText}}</ElText>
         <template  #dropdown>
        <ElDropdownMenu>
-          <ElDropdownItem v-for="item in itemList" :key="item.id" :command="item.position" >
+          <ElDropdownItem v-for="item in itemList" :key="item.position" :command="item.position" >
             {{item.text}}
           </ElDropdownItem>
        </ElDropdownMenu>
@@ -22,7 +22,7 @@ import { dropdownSelected,currentPage } from '../stores'
 const props=defineProps<{
   text:string,
   name:string,
-  content:Array<{id:number,text:string,position:number}>
+  content:Array<{text:string,position:number}>
 }>()
 const dropdownText=ref(props.text)
 const itemList=ref(props.content)

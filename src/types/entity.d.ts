@@ -11,7 +11,11 @@ export interface LogOutInfo extends RegisterIn{
     
     
 }
-
+export type MessageOut={
+    role:string,
+    content:string,
+    
+}
 export type PuzzleIn = {
     id: number;
     title: string;
@@ -30,4 +34,12 @@ export type PuzzleInfo={
     topic: number;
     title:string;
     prompts: string[];
+}
+export type CandidateInWithStream={
+    chatRounds:number;
+    content:string;
+}
+export type CandidateOutWithStream={
+    chatRounds:number;
+    messages:MessageOut[];
 }
