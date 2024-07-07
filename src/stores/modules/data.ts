@@ -29,11 +29,12 @@ export const dropdownSelected=reactive(
     dropdownInit
   )
 export const useAnnouncementStore=defineStore("announcement",()=>{
-  const haveShow=ref(false)
-  function show(){
-    haveShow.value=true
+  const shouldShow=ref(true)
+  
+  function close(){
+    shouldShow.value=false
   }
-  return {haveShow,show}
+  return {shouldShow,close}
 
 })
 export const currentPage=ref(1);

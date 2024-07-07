@@ -16,12 +16,11 @@
             <ElCollapse v-model="activeName">
                 <ElCollapseItem name="instruction">
                     <ul class="text-base">
-                        <li>1.游戏结束后，您可以查看汤底。</li>
-                        <li>2.清晰完整的表述，有助于主持人给出更准确的回答。</li>
+                        <li v-for="(item,index) in ruleIntroductionRef" :key="index">{{index+1}}.{{item}}</li>
                     </ul>
                     <template #title>
                         <div class="text-xl font-semibold">
-                            <p>规则介绍</p>
+                            <p>通关指南</p>
                         </div>
                     </template>
     

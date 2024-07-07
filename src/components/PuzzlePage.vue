@@ -207,7 +207,7 @@ function chat() {
     inputStore.input = ""
     isDisabled.value = true
     let uuid=userStore.uuid
-    const toPost = { "messages": messagesStore.getRecentMessages(7), "getPromptTimes": getPromptTimes.value,"userUuid": uuid,chatRounds:0 }
+    const toPost = { "messages": messagesStore.getRecentMessages(15), "getPromptTimes": getPromptTimes.value,"userUuid": uuid,chatRounds:0 }
     toPost.chatRounds=messagesStore.chatRounds
     
    
@@ -219,7 +219,7 @@ function chat() {
         
         
         dealwithWebsocket({
-            "messages":messagesStore.getRecentMessages(9),
+            "messages":messagesStore.getRecentMessages(15),
             "chatRounds":messagesStore.chatRounds
             
         })
@@ -244,7 +244,7 @@ function inputSubmit(){
 function dealwithWebsocket(message:CandidateOutWithStream){
     
     const ws=new WebSocket(websocketUrl+"/ws/candidate/"+routeId)
-    console.log(`尝试建立websocket连接${websocketUrl+"/ws/candidate/"+routeId}`)
+
     ws.onopen=()=>{
         console.log("成功建立websocket连接")
         candidateStore.clear()
@@ -305,7 +305,7 @@ function getPrompt() {
 
 onMounted(() => {
     dealwithWebsocket({
-        "messages":messagesStore.getRecentMessages(9,true),
+        "messages":messagesStore.getRecentMessages(25,true),
         "chatRounds":messagesStore.chatRounds
     })})
 </script>
