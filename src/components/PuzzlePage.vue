@@ -219,7 +219,7 @@ function chat() {
         
         
         dealwithWebsocket({
-            "messages":messagesStore.getRecentMessages(15),
+            "messages":messagesStore.getRecentMessages(25),
             "chatRounds":messagesStore.chatRounds
             
         })
