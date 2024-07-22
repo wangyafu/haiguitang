@@ -252,10 +252,10 @@ function dealwithWebsocket(message:CandidateOutWithStream){
     }
     ws.onmessage=function(event){
         const resData=JSON.parse(event.data)
-        console.log("收到了消息")
+       // console.log("收到了消息")
+        //console.log(resData)
         candidateStore.setCandidate(resData as CandidateInWithStream)
-        console.log(resData)
-        console.log(candidateStore.candidate)
+        
     }
     ws.onclose=()=>{
         console.log("websocket连接关闭")
