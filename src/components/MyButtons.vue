@@ -1,6 +1,8 @@
 <template>
-<div class="flex flex-col items-center   space-y-7 container">
+<div class="flex flex-col items-center   space-y-7 container mb-3 md:mb-5">
+    <span class="text-primary" v-show="showRate">评分高的谜题将被优先展示</span>
 <div class="flex flex-row items-center flex-wrap space-x-3" v-show="showRate" >
+
 <span>为谜题评分:</span>
 <ElRate v-model="rate" :show-text="false"  :texts="['极差', '差', '中等', '好', '妙极']"/>
 <button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="submitRate" >
@@ -52,15 +54,12 @@ function submitRate(){
     console.log(err)
 })
 }
-function goHome(){  
-    router.push('/')
-}
 function goNext(){
     let findRes=puzzlesStore.findNextPuzzle(Number(id as string))
     
     if(findRes<0){
         ElMessage({type:'success',message:'你已经刷完了所有谜题!'})
-        goHome()
+        router.push('/')
     }
     else{
     haveLoad.value=true
@@ -87,25 +86,3 @@ function showAnswer(){
 
 
 </script>
-<style scoped>
-.buttons{
-    position: absolute;
-    bottom: 60px;
-    margin-top: 40px auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: white;
-    
-    justify-content:space-between;
-    width: 28vw;
-}
-.container{
-    bottom: 20px;
-}
-@media(max-width: 768px){
-.buttons{
-        width: 50vw;
-    }
-}
-</style>@/stores/modules/messages@/stores/modules/puzzles

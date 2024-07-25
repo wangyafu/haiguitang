@@ -2,7 +2,7 @@
     <div class="w-full flex flex-col items-center relative">
     
     <div class="bg-gray-50 flex flex-row  w-4/5 items-center  pb-2 px-3 justify-between header font-semibold border/">
-  
+        
         <span class=" cursor-pointer  text-xl hover:text-blue-400 " @click="goHome">海龟汤模拟器</span>
         
         <button class="myBtn  text-base px-2 py-1 font-normal rounded-lg " v-show="!userStore.isLogin" @click="()=>{emit('showLogin')}" >登录/注册</button>

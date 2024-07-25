@@ -35,7 +35,7 @@
         </div>
         <!-- 底部输入区域，包含提示按钮、文本输入和提交按钮等 -->
         <div class=" md:bottom-6 bottom-1 mt-5 md:mt-10 border-4
-        rounded-xl pt-2 flex flex-col items-center md:w-3/6 
+        rounded-xl pt-2 flex flex-col items-center md:w-2/5
         w-11/12 md:px-4 px-1 "  v-show="!messagesStore.GameIsEnd">
             <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12 flex-wrap" v-show="!messagesStore.GameIsEnd">
                 <!-- 提示按钮，点击获取提示，显示剩余提示次数 -->
@@ -77,7 +77,7 @@
             <!-- 输入区域，显示输入框，游戏未结束时可见 -->
             <textarea v-show="!messagesStore.GameIsEnd" class="textarea textarea-primary  relative my-3 border " :disabled="isDisabled"
                 @keyup.enter="inputSubmit" onKeyDown="textareaKeydown" v-model="inputStore.input" 
-                :maxlength="textAreaMaxLen" rows="2" cols="50" :placeholder="textAreaPlaceholder">
+                :maxlength="textAreaMaxLen" rows="1" cols="50" :placeholder="textAreaPlaceholder">
             </textarea>
         </div>
         <!-- 游戏结束按钮区域，游戏结束时显示 -->
