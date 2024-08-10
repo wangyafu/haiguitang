@@ -1,5 +1,7 @@
 <template>
-    <dialog id="my_modal_1" class="modal" v-show="announcementStore.shouldShow">
+    <!--<dialog id="my_modal_1" class="modal" v-show="announcementStore.shouldShow">-->
+      <dialog id="my_modal_1" class="modal" v-show="false">
+      
         <div class="modal-box">
           <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 hover:border-primary" @click="announcementStore.close()">✕</button>

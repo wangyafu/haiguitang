@@ -15,9 +15,15 @@
         <div class="text-xl">
             <ElCollapse v-model="activeName">
                 <ElCollapseItem name="instruction">
+                    <!--
                     <ul class="text-base">
                         <li v-for="(item,index) in ruleIntroductionRef" :key="index">{{index+1}}.{{item}}</li>
                     </ul>
+                -->
+                    <p class="myLi">当你认为自己已经猜到汤底时，请尽可能完整地表述你对汤底的猜测。如果你的猜测与汤底中的关键性情节吻合，主持人将回复你“完全正确”，判定你通关！
+                        <br>
+                        如果你实在猜不到，可以在更多选项中结束游戏，然后查看汤底。
+                    </p>
                     <template #title>
                         <div class="text-xl font-semibold">
                             <p>通关指南</p>
@@ -81,3 +87,14 @@ function ShareUrl() {
 }
 
 </script>
+<style scoped>
+.myLi{
+    border-left: 3px;
+    border-color: #409eff;
+    border-style: solid;
+    background-color: rgb(245,245,245);
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:10px;
+  }
+</style>

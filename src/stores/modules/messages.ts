@@ -11,7 +11,7 @@ type Message={
 }
 
 
-export const maxChatRounds=ref(30)
+export const maxChatRounds=ref(20)
 export const useMessagesStore=defineStore("messages",()=>{
     const messages=ref<Message[]>([])
     const chatRounds=ref(0)

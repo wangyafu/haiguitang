@@ -1,6 +1,6 @@
 <template>
 <div class="flex flex-col items-center   space-y-7 container mb-3 md:mb-5">
-    <span class="text-primary" v-show="showRate">评分高的谜题将被优先展示</span>
+    <span class="text-primary" v-show="showRate">让好谜题脱颖而出</span>
 <div class="flex flex-row items-center flex-wrap space-x-3" v-show="showRate" >
 
 <span>为谜题评分:</span>
@@ -43,6 +43,7 @@ watch(haveLoad,()=>{
 })
 function submitRate(){
     showRate.value=false
+
     ElNotification({
         title:'评分成功',
         message:'感谢您的反馈!',

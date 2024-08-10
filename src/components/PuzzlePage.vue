@@ -35,7 +35,7 @@
         </div>
         <!-- 底部输入区域，包含提示按钮、文本输入和提交按钮等 -->
         <div class=" md:bottom-6 bottom-1 mt-5 md:mt-10 border-4
-        rounded-xl pt-2 flex flex-col items-center md:w-2/5
+        rounded-xl pt-2 flex flex-col items-center md:w-3/5
         w-11/12 md:px-4 px-1 "  v-show="!messagesStore.GameIsEnd">
             <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12 flex-wrap" v-show="!messagesStore.GameIsEnd">
                 <!-- 提示按钮，点击获取提示，显示剩余提示次数 -->
@@ -219,7 +219,7 @@ function chat() {
         
         
         dealwithWebsocket({
-            "messages":messagesStore.getRecentMessages(25),
+            "messages":messagesStore.getRecentMessages(63),
             "chatRounds":messagesStore.chatRounds
             
         })
@@ -305,7 +305,7 @@ function getPrompt() {
 
 onMounted(() => {
     dealwithWebsocket({
-        "messages":messagesStore.getRecentMessages(25,true),
+        "messages":messagesStore.getRecentMessages(63,true),
         "chatRounds":messagesStore.chatRounds
     })})
 </script>

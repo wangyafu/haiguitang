@@ -15,10 +15,10 @@
       </p>
       <br>
       <div class="flex flex-row">
-      <ElButton plain="true"><a href="#通关秘籍">通关秘籍</a></ElButton>
-      <ElButton type="primary"><a href="#联系开发者">联系开发者</a></ElButton>
+      <ElButton size="large"><a href="#通关秘籍">通关秘籍</a></ElButton>
+      <ElButton type="primary" size="large"><a href="#联系开发者">联系开发者</a></ElButton>
       </div>
-      <p class="md:text-2xl text-xl text-red-500">⚠️注意：部分谜题包含恐怖元素，请谨慎选择！ </p>
+      <p class="md:text-xl text-lg text-red-500">⚠️注意：部分谜题包含恐怖元素，请谨慎选择！ </p>
       <PuzzleShow />
       <div  class="leading-loose">
         <a id="通关秘籍"></a>
