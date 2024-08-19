@@ -29,7 +29,7 @@
 
 import { ref,reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { getPercentageStr, getPuzzleRank, getRate } from '../assets/utils'
+import { getPercentageStr, getPuzzleRank, getRate } from '@/assets/utils'
 import { usePuzzlesStore } from '@/stores';
 import { ElMessageBox } from 'element-plus'
 const typeList = ["primary", "warning", "danger"]

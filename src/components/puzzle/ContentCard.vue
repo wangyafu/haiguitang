@@ -38,19 +38,18 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { ruleIntroduction } from '../assets/text.js';
+import { ref } from 'vue';
+import { ruleIntroduction } from '@/assets/text.js';
 import { Share } from '@element-plus/icons-vue';
 import { useRoute } from 'vue-router'
-import { ElMessage,ElNotification } from 'element-plus';
-import  {DomainUrl} from '../assets/request'
+import { ElNotification } from 'element-plus';
+import  {DomainUrl} from '@/assets/request'
 const ruleIntroductionRef = ref(ruleIntroduction);
-const props = defineProps({
-    face: String,
+const props=defineProps({
+    face:String
 })
 const activeName = ref('instruction');
 const id = useRoute().params.id
-const maxChatRounds = ref(25)
 const Url=DomainUrl+"/puzzles/"+String(id)
 function copyToClipboard(text:string) {
     // 检查浏览器是否支持 Clipboard API

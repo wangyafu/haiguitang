@@ -1,12 +1,12 @@
 <template>
 <div class="flex flex-col items-center   space-y-7 container mb-3 md:mb-5">
-    <span class="text-primary" v-show="showRate">让好谜题脱颖而出</span>
-<div class="flex flex-row items-center flex-wrap space-x-3" v-show="showRate" >
+    <span class="text-primary" v-show="showRate||(!showRate)">让好谜题脱颖而出</span>
+<div class="flex flex-row items-center flex-wrap space-x-3" v-show="showRate||(!showRate)" >
 
 <span>为谜题评分:</span>
 <ElRate v-model="rate" :show-text="false"  :texts="['极差', '差', '中等', '好', '妙极']"/>
 <button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="submitRate" >
-    <img class="w-6 sendIcon" src="../assets/发送.svg"></img>
+    <img class="w-6 sendIcon" src="@/assets/发送.svg"></img>
 </button>
 </div>
 <div class="flex flex-row items-center space-x-7">
@@ -23,8 +23,8 @@
 <script setup lang="ts">
 import { ArrowRight} from '@element-plus/icons-vue'
 import { usePuzzlesStore,useMessagesStore } from '@/stores'
-import router from "../router/index"
-import {request} from "../assets/request"
+import router from "@/router/index"
+import {request} from "@/assets/request"
 import {ref, watch} from 'vue'
 import { ElIcon,ElButton,ElRate,ElNotification,ElMessage } from 'element-plus'
 

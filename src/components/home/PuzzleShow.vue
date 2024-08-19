@@ -17,9 +17,9 @@
 </template>
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { dropdownSelected,dropdownList,usePuzzlesStore,currentPage} from "../stores"
-import type {Puzzle} from "../stores"
-import {getPuzzleRank,getRate} from "../assets/utils.js"
+import { dropdownSelected,dropdownList,usePuzzlesStore,currentPage} from "@/stores"
+import type {Puzzle} from "@/stores"
+import {getPuzzleRank,getRate} from "@/assets/utils.js"
 import { useRouter } from 'vue-router'
 import {ElMessage } from 'element-plus'
 import MyDropdown from './MyDropdown.vue'
@@ -36,21 +36,10 @@ function goPuzzle(){
         ElMessage.error('没有可挑战的题目')
     }
     else{
-  
     router.push('/puzzles/'+String(findRes))
-    
-    
     }
 }
 //遍历一个js对象是否每个属性都等于零的函数
-function isAllZero(obj:any) {
-  for (let key in obj) {
-    if (obj[key] !== 0) {
-      return false
-    }
-  }
-  return true
-}
 function getDropdownAllowable(itemRank:number, itemTopic:number,itemState:number) {
   let rankAllowable = (itemRank == dropdownSelected.rank || dropdownSelected.rank == 0)
   let topicAllowable = (itemTopic == dropdownSelected.topic || dropdownSelected.topic == 0)

@@ -39,7 +39,7 @@
         w-11/12 md:px-4 px-1 "  v-show="!messagesStore.GameIsEnd">
             <div class="flex flex-row items-center justify-items-start   space-x-4  md:w-5/6 w-11/12 flex-wrap" v-show="!messagesStore.GameIsEnd">
                 <!-- 提示按钮，点击获取提示，显示剩余提示次数 -->
-                <button @click="tryGetPrompt" class="btn btn-primary text-white">来个提示  {{getPromptTimes }}/{{puzzle.prompts.length }}
+                <button @click="tryGetPrompt" class="btn btn-primary text-white">提示  {{getPromptTimes }}/{{puzzle.prompts.length }}
                     </button>
                 <!-- 查看汤面按钮，悬停显示汤面完整内容 -->
                
@@ -53,11 +53,11 @@
             </span>
                 <!-- 提交按钮，点击提交输入 -->
                 <button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="inputSubmit" :disabled="isDisabled">
-                    <img class="w-6" src="../assets/发送.svg"></img>
+                    <img class="w-6" src="@/assets/发送.svg"></img>
                 </button>
                 <div class="dropdown dropdown-top">
                     <div tabindex="0" role="button" class="mt-1"><button class="btn btn-circle btn-outline  hover:border-primary border-gray-400 hover:bg-white" @click="">
-                        <img class="w-6" src="../assets/更多.svg"></img>
+                        <img class="w-6" src="@/assets/更多.svg"></img>
                         </button></div>
                     <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                       <li> <el-popover placement="top" trigger="hover" width="400px" :content="puzzle.face" >
@@ -93,18 +93,15 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref, watch} from 'vue'
-import { useRoute } from 'vue-router'
-import {request,websocketUrl} from '../assets/request'
-import {  getRandomInt } from '../assets/utils'
+import {request,websocketUrl} from '@/assets/request'
+import {  getRandomInt } from '@/assets/utils'
 import { ElButton, ElDialog, ElNotification, ElText,ElMessage,ElPopover,ElMessageBox} from 'element-plus';
-import { openingRemarks } from '../assets/text'
-import ChatRounds  from './ChatRounds.vue'
-import MyButtons  from './MyButtons.vue';
-import MessageCard  from './MessageCard.vue';
-import ContentCard  from './ContentCard.vue';
-import {useMessagesStore,useCandidateStore,useInputStore,useUserStore,useLoginStore,usePuzzlesStore,userInput} from "../stores"
+import { openingRemarks } from '@/assets/text'
+import ChatRounds  from '../ChatRounds.vue'
+import MessageCard  from '../MessageCard.vue';
+import {useMessagesStore,useCandidateStore,useInputStore,useUserStore,useLoginStore,usePuzzlesStore,userInput} from "@/stores"
 import { userMessageCounter } from '@/assets/counter'  
-import {getPercentageStr  } from '../assets/utils'
+import {getPercentageStr  } from '@/assets/utils'
 
 import type {PuzzleInfo,CandidateOutWithStream,CandidateInWithStream} from "@/types/entity"
 
@@ -123,17 +120,8 @@ const userStore=useUserStore()
 const textAreaPlaceholder = ref("快提出问题来验证你的猜想！当你认为自己已经猜到汤底时，请以“汤底”开始你对汤底的叙述。")
 const isDisabled = ref(false)
 const congratulationText = ref("")
-const inputStyle = {
-    border: "solid black",
-    borderRadius: "1vw",
-}
 const scrollbarRef = ref();
-
 const noPrompt = ref(false);
-const getPromptMessage = ref("已经获取了所有提示")
-
-const routeId = useRoute().params.id
-
 messagesStore.refresh();
 const initMessageId = messagesStore.newMessage(false)
 const openRemark = openingRemarks[getRandomInt(0, openingRemarks.length - 1)]
@@ -358,16 +346,3 @@ textarea{
     
 }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-../stores/modules/messages../stores/modules/puzzles

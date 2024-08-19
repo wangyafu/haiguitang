@@ -1,5 +1,5 @@
- import axios from 'axios'
- export const DomainUrl="http://www.hgtang.com"
+import axios from "axios"
+export const DomainUrl="http://www.hgtang.com"
 
 export  const request = axios.create({
   baseURL: "http://101.43.50.164:8080",

@@ -3,7 +3,7 @@
     <div class="chat chat-start" v-if="!props.isHuman">
         <div class="chat-image avatar">
             <div class="w-10 rounded-full">
-              <img alt="主持人头像" src="../assets/电脑.svg" />
+              <img alt="主持人头像" src="@/assets/电脑.svg" />
             </div>
           </div>
         <div class="chat-bubble chat-bubble-primary text-white" v-loading="props.isLoading">{{props.text}}</div>
@@ -11,7 +11,7 @@
       <div class="chat chat-end" v-if="props.isHuman">
         <div class="chat-image avatar" >
             <div class="w-10 rounded-full">
-              <img alt="用户头像" src="../assets/用户.svg" />
+              <img alt="用户头像" src="@/assets/用户.svg" />
             </div>
           </div>
         <div class="chat-bubble chat-bubble-info" v-loading="props.isLoading">{{props.text}}
@@ -30,7 +30,7 @@ const props=defineProps({
     isLoading:Boolean
 })
 
-const BaseImageUrl="../assets/"
+const BaseImageUrl="@/assets/"
 
 
 const imageUrl=ref(BaseImageUrl+(props.isHuman?"用户":"电脑")+".svg")
