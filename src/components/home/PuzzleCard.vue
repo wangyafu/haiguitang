@@ -13,8 +13,8 @@
                     <ElTag size="large" type="primary" :plain="true">{{ item }}</ElTag>
                 </div>
                 <span>
-                    <ElTag v-show="!isSuccess" size="large" type="info" effect="light">未通关</ElTag>
-                    <ElTag v-show="isSuccess" size="large" type="success">已通关</ElTag>
+                    <ElTag v-if="!isSuccess" size="large" type="info" effect="light">未通关</ElTag>
+                    <ElTag v-if="isSuccess" size="large" type="success">已通关</ElTag>
                 </span>
                 
             </div>

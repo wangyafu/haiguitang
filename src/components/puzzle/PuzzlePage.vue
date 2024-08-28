@@ -92,7 +92,7 @@
             </textarea>
         </div>
         <!-- 游戏结束按钮区域，游戏结束时显示 -->
-        <MyButtons v-show="messagesStore.GameIsEnd" />
+        <MyButtons v-if="messagesStore.GameIsEnd" />
         <!-- 提示对话框，点击按钮显示，确认获取提示 -->
         
     </div>

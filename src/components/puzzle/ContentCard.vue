@@ -5,7 +5,7 @@
             <span class="font-medium text-base"></span>
             <span class="font-medium text-base">{{ face }}</span>
             
-            <span class="shareButton p-4" v-show="true">
+            <span class="shareButton p-4" >
                 <el-button :icon="Share" @click="ShareUrl" type="primary" plain="true">
                     分享
                 </el-button>

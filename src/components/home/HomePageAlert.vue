@@ -1,6 +1,6 @@
 <template>
     <!--<dialog id="my_modal_1" class="modal" v-show="announcementStore.shouldShow">-->
-      <dialog id="my_modal_1" class="modal" v-show="false">
+      <dialog id="my_modal_1" class="modal" v-if="false">
       
         <div class="modal-box">
           <form method="dialog">

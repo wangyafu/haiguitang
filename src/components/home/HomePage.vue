@@ -14,10 +14,14 @@
       <p class="md:text-lg text-xl">海龟汤是一种猜测情境型事件真相的智力游戏。在海龟汤模拟器中，文本大模型将扮演主持人，你可以提出提出任何问题来接近真相。
       </p>
       <br>
-      <div class="flex flex-row">
+      <div class="flex flex-row flex-wrap space-x-4">
       <ElButton size="large"><a href="#通关秘籍">通关秘籍</a></ElButton>
       <ElButton type="primary" size="large"><a href="#联系开发者">联系开发者</a></ElButton>
-      </div>
+      <ElLink href="https://docs.qq.com/form/page/DS1FPT3B6aVpBU2hw">
+        贡献海龟汤
+      </ElLink>
+    </div>
+      
       <p class="md:text-xl text-lg text-red-500">⚠️注意：部分谜题包含恐怖元素，请谨慎选择！ </p>
       <PuzzleShow />
       <div  class="leading-loose">
