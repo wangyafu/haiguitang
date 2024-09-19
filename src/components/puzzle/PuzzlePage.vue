@@ -147,7 +147,7 @@ let puzzleInit: PuzzleInfo ={
 const puzzle = ref(puzzleInit)
 const isDialogVisible = ref(false)
 const getPromptTimes = ref(0)
-const showCandidate = ref(true)
+const showCandidate = ref(false)
 // 调用初始化方法
 userMessageCounter.init();
 function textareaKeydown(){

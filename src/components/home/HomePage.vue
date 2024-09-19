@@ -9,7 +9,7 @@
         <img src="@/assets/巫女.png">
       </div>
 
-      <h1 class="md:text-2xl text-xl ">欢迎使用海龟汤模拟器 Web 版</h1>
+      <h1 class="md:text-xl text-xl ">欢迎使用海龟汤模拟器 Web 版</h1>
       <br>
       <p class="md:text-lg text-xl">海龟汤是一种猜测情境型事件真相的智力游戏。在海龟汤模拟器中，文本大模型将扮演主持人，你可以提出提出任何问题来接近真相。
       </p>
@@ -26,7 +26,7 @@
       <PuzzleShow />
       <div  class="leading-loose">
         <a id="通关秘籍"></a>
-        <h2 class="md:text-2xl text-xl">通关秘籍</h2>
+        <h2 class="md:text-xl text-xl">通关秘籍</h2>
         <p class="font-bold">尝试一下这些技巧，也许你能获得更棒的游戏体验！</p>
         <ul class="flex flex-col space-y-3">
           <li class="myLi">主动要求主持人给你进行<span class="marker-effect ">思路上的引导</span>。你可以这样说：“引导一下”。</li>
@@ -35,9 +35,9 @@
           <li class="myLi">让主持人总结你当前获得的<span class="marker-effect ">线索</span>。</li>
         </ul>
         <a id="联系开发者"></a>
-          <h2 class="md:text-2xl text-xl">联系开发者</h2>
+          <h2 class="md:text-xl text-xl">联系开发者</h2>
           <div class="contact">
-            <p class="md:text-lg text-xl">我一般活跃在以下社交平台，欢迎你到这些平台来追踪海龟汤模拟器的更新计划，也欢迎你分享游玩海龟汤模拟器时的感受。感谢你的支持！</p>
+            <p >我一般活跃在以下社交平台，欢迎你到这些平台来追踪海龟汤模拟器的更新计划，也欢迎你分享游玩海龟汤模拟器时的感受。感谢你的支持！</p>
     
             <br>
             <ElLink href="https://www.xiaohongshu.com/user/profile/635f85b8000000001901fe43" target="_blank">
@@ -61,7 +61,11 @@
               </div>
               微博:wonderful王04
             </ElLink>
+          <!-- <h2 class="md:text-xl text-xl">赞助</h2>
+          <p>如果你觉得海龟汤模拟器为你带来了乐趣，可以请作者喝杯果汁🍹</p>
+          <img src="@/assets/微信.png" alt="微信支付" class="w-1/2"> -->
           </div>
+        
           
        
     

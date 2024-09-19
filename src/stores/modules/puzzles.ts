@@ -25,6 +25,7 @@ export type Puzzle = {
   tagContents: Array<string>;
   position: number;
   shortFace:string;
+  rate:number;
   
 }
 export const usePuzzlesStore = defineStore(

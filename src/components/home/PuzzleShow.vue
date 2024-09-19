@@ -1,11 +1,25 @@
 <template>
-  <div class="dropdownline">
+  <div class="flex flex-row flex-wrap">
     <MyDropdown v-for="item in dropdownList" :name="item.name" :key="item.name" :text="item.text" :content="item.content"/>
-    <ElButton type="primary" @click="goPuzzle" :text="true">开始挑战🚀</ElButton>
+    <el-dropdown @command="handleSortChange" split-button="true" placement="bottom-end">
+      
+        {{sortByText}}
+      
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="rate">按评分降序</el-dropdown-item>
+          <el-dropdown-item command="wholeTimes">按热度降序</el-dropdown-item>
+          <el-dropdown-item command="difficultyDesc">按难度降序</el-dropdown-item>
+          <el-dropdown-item command="difficultyDesc">按难度升序</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+    
+    <!-- <ElButton type="primary" @click="goPuzzle" :text="true">开始挑战🚀</ElButton> -->
   </div>
   
   <div class="space-y-5 pt-7">
-    <PuzzleCard v-for="item in puzzlesStore.puzzlesRef" :key="item.puzzleId" :tags="item.tagContents" :isSuccess="item.isSuccess"
+    <PuzzleCard v-for="item in sortedPuzzles" :key="item.puzzleId" :tags="item.tagContents" :isSuccess="item.isSuccess"
       :title="item.title" :id="item.puzzleId" v-show="puzzleShouldShow(item,currentPage)" :wholeTimes="item.wholeTimes" :successTimes="item.successTimes"
       :short-face="item.shortFace" />
   </div>
@@ -29,7 +43,8 @@ const dropdownListRef=ref(dropdownList)
 const pageSize=ref(10)
 const onlyShowPassed=ref(false)
 const router = useRouter()
-
+const sortBy = ref('rate')
+const sortByText=ref('按评分降序')
 function goPuzzle(){
   let findRes=puzzlesStore.findNextPuzzle(-1)
   if(findRes==-1){
@@ -57,6 +72,29 @@ const puzzleShouldShow = function (item:Puzzle,currentPage:number)  {
   return dropdownAllowable&&pageAllowable1&&pageAllowable2
 }
 
+const sortedPuzzles = computed(() => {
+  let puzzles = puzzlesStore.puzzlesRef.filter(item => puzzleShouldShow(item, currentPage.value))
+  switch (sortBy.value) {
+    case 'rate':
+      sortByText.value='按评分降序'
+      return puzzles.sort((a, b) => b.rate - a.rate)
+    case 'wholeTimes':
+      sortByText.value='按热度降序'
+      return puzzles.sort((a, b) => b.wholeTimes - a.wholeTimes)
+    case 'difficultyDesc':
+      sortByText.value='按难度降序'
+      return puzzles.sort((a, b) => (b.successTimes/b.wholeTimes+1) - (a.successTimes/a.wholeTimes+1))
+    case 'difficultyAsc':
+      sortByText.value='按难度升序'
+      return puzzles.sort((a, b) => (a.successTimes/a.wholeTimes+1) - (b.successTimes/b.wholeTimes+1))
+    // default:
+    //   return puzzles
+  }
+})
+
+function handleSortChange(value: string) {
+  sortBy.value = value
+}
 
 watch(dropdownSelected, () => {
   
@@ -79,10 +117,7 @@ watch(dropdownSelected, () => {
 
 </script>
 <style scoped>
-.dropdownline {
-  display: flex;
-  flex-direction: row;
-}
+
 .paginationContainer{
   display: flex;
   flex-direction: column;

@@ -30,7 +30,7 @@ const itemList=ref(props.content)
 dropdownText.value=dropdownSelected[props.name]?props.content[dropdownSelected[props.name]].text:props.text
 function handleCommand(command:number){
     currentPage.value=1
-    dropdownText.value=itemList.value[command].text
+    dropdownText.value=command==0?props.text:itemList.value[command].text
     dropdownSelected[props.name]=command
 }
 </script>

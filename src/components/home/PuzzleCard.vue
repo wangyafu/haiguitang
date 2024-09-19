@@ -3,17 +3,17 @@
         <div class=" flex flex-row justify-between flex-wrap " 
             @click="tryGoToPuzzle">
 
-            <span class="titleSpan">{{ title }}</span>
+            <span class="text-lg  py-3 pl-5">{{ title }}</span>
             <div class="moreinfo">
-                <div class="rate">
+                <div class="mr-1">
                     <ElTag size="large" :type="type" effect="light" :round="true" :plain="true">
                         {{ wholeTimes }}次（通关率{{ rateStr }}）</ElTag>
                 </div>
-                <div class="tag" v-for="item in tags">
-                    <ElTag size="large" type="primary" :plain="true">{{ item }}</ElTag>
+                <div  v-for="item in tags">
+                    <ElTag  type="primary" size="large" :plain="true">{{ item }}</ElTag>
                 </div>
                 <span>
-                    <ElTag v-if="!isSuccess" size="large" type="info" effect="light">未通关</ElTag>
+                    <ElTag v-if="!isSuccess"  size="large" type="info" effect="light">未通关</ElTag>
                     <ElTag v-if="isSuccess" size="large" type="success">已通关</ElTag>
                 </span>
                 
@@ -96,10 +96,9 @@ function goToPuzzle() {
     margin-top: 15px;
     border-radius: 8px;
     border: solid 1px #EBEEF5;
-    padding: 10px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content:space-between ;
     padding-right: 60px;
     flex-wrap: wrap;
 
@@ -109,9 +108,6 @@ function goToPuzzle() {
     border: solid 1px #409EFF;
 }
 
-.rate {
-    margin-right: 5px;
-}
 
 .moreinfo {
     display: flex;
@@ -122,16 +118,6 @@ function goToPuzzle() {
 }
 
 
-.marginTop {
-    margin-top: 10px;
-}
-
-.titleSpan {
-    font-size: 20px;
-    padding-top: 14px;
-    padding-bottom: 14px;
-    padding-left: 10px;
-}
 
 @media(max-width: 768px) {
     .puzzlecard {
@@ -140,4 +126,4 @@ function goToPuzzle() {
     }
 
 }
-</style>@/stores/modules/puzzles
+</style>
