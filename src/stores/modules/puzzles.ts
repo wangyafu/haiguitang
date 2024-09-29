@@ -3,16 +3,8 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { request } from "../../assets/request";
 import { topicList } from "./data";
-import type { PuzzleIn } from "@/types/entity"
-type PuzzleBase = {
-  title: string;
-  rank: number;
-  topic: number;
-  isSuccess:boolean;
-  successTimes: number;
-  wholeTimes: number;
-  tagContents: Array<string>;
-}
+import type { PuzzleIn,PuzzleBase } from "@/types/entity"
+import {puzzleBaseArray} from "@/assets/puzzleBase"
 
 export type Puzzle = {
   puzzleId: number;
@@ -23,7 +15,7 @@ export type Puzzle = {
   successTimes: number;
   wholeTimes: number;
   tagContents: Array<string>;
-  position: number;
+  
   shortFace:string;
   rate:number;
   
@@ -34,10 +26,34 @@ export const usePuzzlesStore = defineStore(
     const puzzles: Array<Puzzle> = [];
     const puzzlesRef = ref(puzzles);
     const puzzleSuccessNum = ref(0);
-    const compliantPuzzleNum = ref(0);
+    // const compliantPuzzleNum = ref(0);
+    const compliantPuzzleNum=ref(0)
     const haveLoadPuzzles = ref(false);
+    const haveSetPuzzles=ref(false)
     const num=ref(0)
     let nowPosition=1;
+    function initPuzzles(){
+      //将puzzleBaseArray中的Null转换为Undefined
+      
+      const initPuzzlesData=puzzleBaseArray.map((puzzleData:PuzzleBase)=>{
+        return{
+          ...puzzleData,
+          isSuccess:false,
+          successTimes:0,
+          wholeTimes:0,
+          rate:0,
+          rank:0
+        }
+    })
+    const initPuzzlesArray=initPuzzlesData.map((puzzleData:PuzzleBase)=>{
+      return makePuzzle(puzzleData as PuzzleIn)
+    })
+    puzzlesRef.value=initPuzzlesArray
+    // console.log(puzzlesRef.value)
+    compliantPuzzleNum.value=puzzlesRef.value.length
+    
+  }
+  
     function makePuzzle(puzzleData: PuzzleIn): Puzzle {
       puzzleData.tagContents.concat(
         puzzleData.topic ? [topicList.content[puzzleData.topic].text] : []
@@ -52,9 +68,9 @@ export const usePuzzlesStore = defineStore(
         successTimes: puzzleData.successTimes,
         wholeTimes: puzzleData.wholeTimes,
         tagContents:puzzleData.tagContents,
-        position:nowPosition++,
+        // position:nowPosition++,
         shortFace:puzzleData.shortFace?puzzleData.shortFace:"",
-        
+        rate:puzzleData.rate
       
       };
     }
@@ -63,18 +79,36 @@ export const usePuzzlesStore = defineStore(
     
   
     function setPuzzles(puzzleData:PuzzleIn[]){
+      const puzzlesId=puzzlesRef.value.map((puzzle)=>puzzle.puzzleId)
       for (let i = 0; i < puzzleData.length; i++) {
         const newData = puzzleData[i];
         if (newData.isSuccess == true) {
           puzzleSuccessNum.value += 1;
         }
         let newPuzzle = makePuzzle(newData as PuzzleIn);
-
+        if(!puzzlesId.includes(newPuzzle.puzzleId)){
         puzzlesRef.value.push(newPuzzle);
       }
+      else{
+      puzzlesRef.value.forEach((element: Puzzle) => {
+        if (element.puzzleId == newPuzzle.puzzleId) {
+          element.isSuccess = newPuzzle.isSuccess;
+          element.successTimes = newPuzzle.successTimes;
+          element.wholeTimes = newPuzzle.wholeTimes;
+          element.rate = newPuzzle.rate;
+          element.rank = newPuzzle.rank;
+          element.shortFace=newPuzzle.shortFace
+        }
+       
+      });
+      }
+      haveSetPuzzles.value=true
+    }
+      
 
       compliantPuzzleNum.value = puzzlesRef.value.length;
       haveLoadPuzzles.value = true;
+    
     }
     
   function passPuzzles(puzzlesId:Number[]):void{
@@ -113,6 +147,6 @@ function findNextPuzzle(nowPuzzleId:number):number{
   return -1
 }
     
-return { puzzlesRef, puzzleSuccessNum, compliantPuzzleNum, haveLoadPuzzles, setPuzzles, passPuzzle,passPuzzles,findNextPuzzle }
+return { puzzlesRef, puzzleSuccessNum, compliantPuzzleNum, haveLoadPuzzles, haveSetPuzzles,initPuzzles,setPuzzles, passPuzzle,passPuzzles,findNextPuzzle }
 }
 );

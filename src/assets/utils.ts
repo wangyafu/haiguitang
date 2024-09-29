@@ -1,4 +1,5 @@
 import {Md5} from 'ts-md5/dist/md5';
+import {computed} from 'vue'
  export function getPercentageStr(decimalValue:number) {
     const percentageValue = decimalValue * 100; // 将小数转换为百分比
     const formattedPercentage = percentageValue.toFixed(2); // 保留两位小数
@@ -22,6 +23,7 @@ export function getRate(successTimes:number|undefined,wholeTimes:number|undefine
 }
 return rate
 }
+
 export function getPuzzleRank(rate:number){
   if(rate<0.1){
     return 3

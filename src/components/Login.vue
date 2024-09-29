@@ -39,7 +39,7 @@
               <button class="btn w-[100px] " @click.prevent="Register()" v-show="showRegister">注册</button>
               </div>
               <div>
-                <button class="text-base text-primary  " @click.prevent="goToRegiter" v-show="!showRegister">还没有账号？立即注册</button>
+                <button class="text-base text-primary  " @click.prevent="goToRegister" v-show="!showRegister">还没有账号？立即注册</button>
               </div>
             </div>
           </el-form>
@@ -125,22 +125,19 @@ function Login(){
     })
   }
 }
-function goToRegiter(){
+function goToRegister(){
   showRegister.value=true
   return 
 }
 function Register(){
   let copyForm={...toRaw(form)}
   
-  if(!copyForm.repeat){
-    console.log("出错了")
-    return
-
-  }
-  if(copyForm.userName.trim()===""||copyForm.password.trim()===""||copyForm.repeat.trim()===""){
+  if(copyForm.userName.trim()===""||copyForm.password.trim()===""||copyForm.repeat!.trim()===""){
     ElMessage({
       message: "用户名和密码不能为空哦",
-})
+      type: "error",
+    });
+    return
   }
   else if(copyForm.password!==copyForm.repeat){
     ElMessage({
@@ -174,11 +171,13 @@ function Register(){
             type: "success",
           });
           dealWithInfo(resData)
+        }
+          
 
 
 
 
-    }
+    
   }).finally(()=>{
     return
   })

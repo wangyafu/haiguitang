@@ -10,7 +10,7 @@
           <el-dropdown-item command="rate">按评分降序</el-dropdown-item>
           <el-dropdown-item command="wholeTimes">按热度降序</el-dropdown-item>
           <el-dropdown-item command="difficultyDesc">按难度降序</el-dropdown-item>
-          <el-dropdown-item command="difficultyDesc">按难度升序</el-dropdown-item>
+          <el-dropdown-item command="difficultyAsc">按难度升序</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -65,15 +65,16 @@ const puzzleShouldShow = function (item:Puzzle,currentPage:number)  {
   let itemRank=getPuzzleRank(getRate(item.successTimes,item.wholeTimes))
   let itemTopic=item.topic
   let dropdownAllowable=getDropdownAllowable(itemRank, itemTopic,Number(item.isSuccess)+1)
-  
-  
-  const pageAllowable1=(currentPage-1)*pageSize.value<= item.position
-  const pageAllowable2=item.position<(currentPage)*pageSize.value
+  //先筛选出符合dropdownAllowable的元素
+  let filteredPuzzles=puzzlesStore.puzzlesRef.filter(item => getDropdownAllowable(getPuzzleRank(getRate(item.successTimes,item.wholeTimes)), item.topic,Number(item.isSuccess)+1))
+  const pageAllowable1=(currentPage-1)*pageSize.value <= filteredPuzzles.indexOf(item)
+  const pageAllowable2=filteredPuzzles.indexOf(item) <(currentPage)*pageSize.value
   return dropdownAllowable&&pageAllowable1&&pageAllowable2
 }
 
 const sortedPuzzles = computed(() => {
-  let puzzles = puzzlesStore.puzzlesRef.filter(item => puzzleShouldShow(item, currentPage.value))
+  // let puzzles = puzzlesStore.puzzlesRef.filter(item => puzzleShouldShow(item, currentPage.value))
+  let puzzles=puzzlesStore.puzzlesRef
   switch (sortBy.value) {
     case 'rate':
       sortByText.value='按评分降序'
@@ -81,11 +82,11 @@ const sortedPuzzles = computed(() => {
     case 'wholeTimes':
       sortByText.value='按热度降序'
       return puzzles.sort((a, b) => b.wholeTimes - a.wholeTimes)
-    case 'difficultyDesc':
-      sortByText.value='按难度降序'
-      return puzzles.sort((a, b) => (b.successTimes/b.wholeTimes+1) - (a.successTimes/a.wholeTimes+1))
     case 'difficultyAsc':
       sortByText.value='按难度升序'
+      return puzzles.sort((a, b) => (b.successTimes/b.wholeTimes+1) - (a.successTimes/a.wholeTimes+1))
+    case 'difficultyDesc':
+      sortByText.value='按难度降序'
       return puzzles.sort((a, b) => (a.successTimes/a.wholeTimes+1) - (b.successTimes/b.wholeTimes+1))
     // default:
     //   return puzzles
@@ -98,19 +99,26 @@ function handleSortChange(value: string) {
 
 watch(dropdownSelected, () => {
   
-  let tempNum=0
-  for(let i = 0; i < puzzlesStore.puzzlesRef.length; i++){
-    let rate=getRate(puzzlesStore.puzzlesRef[i].successTimes,puzzlesStore.puzzlesRef[i].wholeTimes)
-    let itemRank=getPuzzleRank(rate)
-    let itemTopic=puzzlesStore.puzzlesRef[i].topic
-    let itemState=Number(puzzlesStore.puzzlesRef[i].isSuccess)+1
+  // let tempNum=0
+  // for(let i = 0; i < puzzlesStore.puzzlesRef.length; i++){
+  //   let rate=getRate(puzzlesStore.puzzlesRef[i].successTimes,puzzlesStore.puzzlesRef[i].wholeTimes)
+  //   let itemRank=getPuzzleRank(rate)
+  //   let itemTopic=puzzlesStore.puzzlesRef[i].topic
+  //   let itemState=Number(puzzlesStore.puzzlesRef[i].isSuccess)+1
     
-    if(getDropdownAllowable(itemRank, itemTopic,itemState)){
-      puzzlesStore.puzzlesRef[i].position=tempNum
-      tempNum++
-    }
-    }
-    puzzlesStore.compliantPuzzleNum=tempNum
+  //   if(getDropdownAllowable(itemRank, itemTopic,itemState)){
+      
+  //     tempNum++
+  //   }
+  //   }
+    puzzlesStore.compliantPuzzleNum=puzzlesStore.puzzlesRef.reduce((acc, cur) => {
+      let rate=getRate(cur.successTimes,cur.wholeTimes)
+      let itemRank=getPuzzleRank(rate)
+      let itemTopic=cur.topic
+      let itemState=Number(cur.isSuccess)+1
+      
+      return getDropdownAllowable(itemRank, itemTopic,itemState) ? acc + 1 :acc;
+    },0)
     
   },{immediate:true}
 )
@@ -123,4 +131,4 @@ watch(dropdownSelected, () => {
   flex-direction: column;
   align-items: center;
 }
-</style>../stores/modules/puzzles../stores/modules/puzzles
+</style>

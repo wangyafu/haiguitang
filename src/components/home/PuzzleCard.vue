@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col bg-white border p-2 pr-10 rounded hover:shadow-lg hover:border-primary">
+    <div class="flex flex-col bg-white border border-gray p-2 pr-10 rounded hover:shadow-lg hover:border-primary-500">
         <div class=" flex flex-row justify-between flex-wrap " 
             @click="tryGoToPuzzle">
 
@@ -27,9 +27,9 @@
 </template>
 <script setup lang="ts">
 
-import { ref,reactive } from 'vue'
+import { ref,reactive,computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { getPercentageStr, getPuzzleRank, getRate } from '@/assets/utils'
+import { getPercentageStr, getPuzzleRank} from '@/assets/utils'
 import { usePuzzlesStore } from '@/stores';
 import { ElMessageBox } from 'element-plus'
 const typeList = ["primary", "warning", "danger"]
@@ -47,13 +47,24 @@ const props = defineProps({
     shortFace: String
 })
 
-let rate = getRate(props.successTimes, props.wholeTimes)
+const rate = computed(() => {
+      if (props.successTimes === undefined || props.wholeTimes === undefined) {
+        console.log("getRate error");
+        return 0;
+      }
+      
+      if (props.wholeTimes !== 0) {
+        return props.successTimes / props.wholeTimes;
+      } else {
+        return 0;
+      }
+    });
 
-let rank = getPuzzleRank(rate)
-const type = ref("")
-//rank取值1-3，越大说明越难
-type.value = typeList[rank - 1]
-const rateStr = getPercentageStr(rate)
+// let rank = getPuzzleRank(rate.value)
+const rank = computed(() => getPuzzleRank(rate.value))
+const type = computed(() => typeList[rank.value - 1])
+
+const rateStr = computed(() => getPercentageStr(rate.value))
 const Url = ref("/puzzles/" + props.id)
 const border=props.shortFace?"1px":"0px"
 
@@ -75,8 +86,8 @@ function confirmGoToPuzzle(confirmContent: string) {
 }
 function tryGoToPuzzle() {
     
-    if (puzzlesStore.puzzleSuccessNum == 0 && rank == 3) {
-        confirmGoToPuzzle(`这个谜题的通关率仅为${rateStr}，确定要挑战吗？也许尝试其它谜题会带来更好的体验。`)
+    if (rank.value == 3) {
+        confirmGoToPuzzle(`这个谜题的通关率仅为${rateStr.value}，确定要挑战吗？也许尝试其它谜题会带来更好的体验。`)
     } else if (props.isSuccess) {
         confirmGoToPuzzle(`你已经成功通关过这个谜题，确定要再来一次吗？`)
 
@@ -91,22 +102,7 @@ function goToPuzzle() {
 }
 </script>
 <style scoped>
-.puzzlecard {
-    background-color: white;
-    margin-top: 15px;
-    border-radius: 8px;
-    border: solid 1px #EBEEF5;
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between ;
-    padding-right: 60px;
-    flex-wrap: wrap;
 
-}
-
-.puzzlecard:hover {
-    border: solid 1px #409EFF;
-}
 
 
 .moreinfo {

@@ -11,35 +11,40 @@ export interface LogOutInfo extends RegisterIn{
     
     
 }
-export type MessageOut={
+export interface MessageOut{
     role:string,
     content:string,
     
 }
-export type PuzzleIn = {
+export interface PuzzleBase{
     id: number;
     title: string;
-    rank: number;
     topic: number;
+    shortFace: string|undefined;
+    tagContents:Array<string>;
+   
+}
+export interface PuzzleIn extends PuzzleBase{
+   
     isSuccess:boolean;
     successTimes: number;
     wholeTimes: number;
-    tagContents: Array<string>;
-    shortFace: string|undefined;
+    rate:number;
+    rank:number;
     
   }
-export type PuzzleInfo={
+export interface PuzzleInfo{
     face: string;
     answerCount: number;
     topic: number;
     title:string;
     prompts: string[];
 }
-export type CandidateInWithStream={
+export interface CandidateInWithStream{
     chatRounds:number;
     content:string;
 }
-export type CandidateOutWithStream={
+export interface CandidateOutWithStream{
     chatRounds:number;
     messages:MessageOut[];
 }
