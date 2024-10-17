@@ -2,7 +2,7 @@
     <div class=" rounded-lg bg-white  md:w-3/6 w-5/6 p-4  border">
         <div>
 
-            <span class="font-medium text-base"></span>
+            <span class="font-medium text-sm"></span>
             <span class="font-medium text-base">{{ face }}</span>
             
             <span class="shareButton p-4" >
@@ -12,7 +12,7 @@
                 
             </span>
         </div>
-        <div class="text-xl">
+        <div class="text-base">
             <ElCollapse v-model="activeName">
                 <ElCollapseItem name="instruction">
                     <!--
@@ -20,12 +20,12 @@
                         <li v-for="(item,index) in ruleIntroductionRef" :key="index">{{index+1}}.{{item}}</li>
                     </ul>
                 -->
-                    <p class="myLi">当你认为自己已经猜到汤底时，请以“汤底”二字开始，并尽可能完整地表述你对汤底的猜测。如果你的猜测与汤底中的关键性情节吻合，主持人将回复你“完全正确”，判定你通关！
+                    <p class="myLi ">当你认为自己已经猜到汤底时，请以“汤底”二字开始，并尽可能完整地表述你对汤底的猜测。如果你的猜测与汤底中的关键性情节吻合，主持人将回复你“完全正确”，判定你通关！
                         <br>
                         如果你实在猜不到，可以在更多选项中结束游戏，然后查看汤底。
                     </p>
                     <template #title>
-                        <div class="text-xl font-semibold">
+                        <div class="text-lg font-semibold">
                             <p>通关指南</p>
                         </div>
                     </template>
@@ -95,5 +95,6 @@ function ShareUrl() {
     padding-top:10px;
     padding-bottom:10px;
     padding-left:10px;
+    font-size: 13px;
   }
 </style>

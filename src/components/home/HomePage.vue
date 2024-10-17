@@ -11,7 +11,7 @@
 
       <h1 class="md:text-xl text-xl ">欢迎使用海龟汤模拟器 Web 版</h1>
       <br>
-      <p class="md:text-lg text-xl">海龟汤是一种猜测情境型事件真相的智力游戏。在海龟汤模拟器中，文本大模型将扮演主持人，你可以提出提出任何问题来接近真相。
+      <p class="md:text-base text-xl">海龟汤是一种猜测情境型事件真相的智力游戏。在海龟汤模拟器中，文本大模型将扮演主持人，你可以提出提出任何问题来接近真相。
       </p>
       <br>
       <div class="flex flex-row flex-wrap space-x-4">
@@ -120,5 +120,6 @@ p {
   padding-top:10px;
   padding-bottom:10px;
   padding-left:10px;
+  font-size: 14px;
 }
 </style>

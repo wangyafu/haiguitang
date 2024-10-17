@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col bg-white border border-gray p-2 pr-10 rounded hover:shadow-lg hover:border-primary-500">
+    <div class="flex flex-col bg-white border border-gray p-2 pr-10 rounded hover:shadow-lg hover:border-primary">
         <div class=" flex flex-row justify-between flex-wrap " 
             @click="tryGoToPuzzle">
 
@@ -20,7 +20,7 @@
             </div>
             
         </div>
-        <div class="text-sm font-thin">
+        <div class="text-xs font-thin">
             {{ shortFace }}
         </div>
     </div>

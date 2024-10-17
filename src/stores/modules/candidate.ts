@@ -19,6 +19,7 @@ export const useCandidateStore = defineStore('candidate', () => {
             return
         }
         else{
+
             maxChatRounds=candidateMessage.chatRounds
             candidate.value.push(candidateMessage.content)
 

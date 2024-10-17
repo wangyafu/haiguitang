@@ -6,7 +6,7 @@
               <img alt="主持人头像" src="@/assets/电脑.svg" />
             </div>
           </div>
-        <div class="chat-bubble chat-bubble-primary text-white" v-loading="props.isLoading">{{props.text}}</div>
+        <div class="chat-bubble chat-bubble-primary text-white " v-loading="props.isLoading">{{props.text}}</div>
       </div>
       <div class="chat chat-end" v-if="props.isHuman">
         <div class="chat-image avatar" >
@@ -14,7 +14,7 @@
               <img alt="用户头像" src="@/assets/用户.svg" />
             </div>
           </div>
-        <div class="chat-bubble chat-bubble-info" v-loading="props.isLoading">{{props.text}}
+        <div class="chat-bubble chat-bubble-info text-sm" v-loading="props.isLoading">{{props.text}}
 
         </div>
       </div>
@@ -43,7 +43,7 @@ const backgroundColor=ref((props.isHuman?"black":"#DCDFE6"))
 </script>
 <style scoped>
 p{
-    font-size: 20px;
+    
     line-height: 1.2;
     margin-left: 10px;
 }
