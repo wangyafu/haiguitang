@@ -39,6 +39,7 @@ export interface PuzzleInfo{
     topic: number;
     title:string;
     prompts: string[];
+    author?:string;
 }
 export interface CandidateInWithStream{
     chatRounds:number;

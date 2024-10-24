@@ -8,6 +8,7 @@
             <div class="modal-box">
                 <h3 class="font-bold text-lg" >恭喜你，通关了!</h3>
                 <p class="py-4">{{congratulationText}}</p>
+                <p v-show="puzzle.author" >该谜题来自于{{puzzle.author}},感谢他的贡献！</p>
                 <div class="modal-action">
                     <form method="dialog">
                         <button class="btn btn-primary">关闭</button>
@@ -188,7 +189,7 @@ function dealWithCode(resData:MessageIn){
                 }
                 congratulationText.value += `超越了全球${getPercentageStr(resData.rate)}的玩家。`
             }
-
+            
         }
 }
 //获取messages
