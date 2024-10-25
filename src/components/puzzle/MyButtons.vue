@@ -4,11 +4,13 @@
 <div class="flex flex-row items-center flex-wrap space-x-3" v-show="showRate||(!showRate)" >
 
 <span>为谜题评分:</span>
-<ElRate v-model="rate" :show-text="false"  :texts="['极差', '差', '中等', '好', '妙极']"/>
-<button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="submitRate" >
+<ElRate v-model="rate" :show-text="false"  :texts="['极差', '差', '中等', '好', '妙极']" :disabled="haveRate"/>
+<button class="btn btn-circle btn-outline hover:bg-primary border-primary hover:border-primary" @click="submitRate"
+:disabled="haveRate" >
     <img class="w-6 sendIcon" src="@/assets/发送.svg"></img>
 </button>
 </div>
+<ElButton @click="refreshPage" size="large" icon="refresh">再来一次</ElButton>"
 <div class="flex flex-row items-center space-x-7">
     <ElButton  @click="showAnswer" size="large" :disabled="isDisabld">
         查看汤底
@@ -35,12 +37,16 @@ const showRate=ref(false)
 const puzzlesStore=usePuzzlesStore()
 const messagesStore=useMessagesStore()
 const rate=ref(3)
+const haveRate=ref(false)
 watch(haveLoad,()=>{
     setTimeout(()=>{
         router.go(0)
     },200)
 
 })
+function refreshPage(){
+    router.go(0)
+}
 function submitRate(){
     showRate.value=false
 
@@ -51,6 +57,8 @@ function submitRate(){
     })
     request.put('/rate/'+String(id),{
         rate:rate.value
+    }).then(response=>{
+        haveRate.value=true
     }).catch(err=>{
     console.log(err)
 })
