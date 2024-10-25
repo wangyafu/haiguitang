@@ -68,22 +68,7 @@
                 </ElTooltip>
                 
 
-                <!-- <div class="dropdown dropdown-top">
-                    <div tabindex="0" role="button" class="mt-1"><button class="btn btn-circle btn-outline  hover:border-primary border-gray-400 hover:bg-white" @click="">
-                        <img class="w-6" src="@/assets/更多.svg"></img>
-                        </button></div>
-                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                      <li> <el-popover placement="top" trigger="hover" width="400px" :content="puzzle.face" >
-                        <template #reference>
-                            
-                        <span class="text-base hover:text-primary">查看汤面</span>
-                        </template>
-                    </el-popover></li>
-                   <li @click="tryEndInAdvance">
-                    <span class="text-base hover:text-primary">结束游戏</span></li>
-
-                    </ul>
-                  </div> -->
+               
             </div>
             
             <!-- 输入区域，显示输入框，游戏未结束时可见 -->
