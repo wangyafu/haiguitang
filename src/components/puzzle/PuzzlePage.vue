@@ -119,9 +119,9 @@ const scrollbarRef = ref();
 const noPrompt = ref(false);
 const routeId = useRoute().params.id
 messagesStore.refresh();
-const initMessageId = messagesStore.newMessage(false)
+
 const openRemark = openingRemarks[getRandomInt(0, openingRemarks.length - 1)]
-messagesStore.loadMessage(initMessageId, openRemark)
+
 const textAreaMaxLen=200
 let puzzleInit: PuzzleInfo ={
     face: "正在加载中，请稍候",
@@ -264,17 +264,6 @@ watch(() => messagesStore.messages.length, () => {
     }, 300)
 }
 )
-// let lastChatRound=0
-// watch(showCandidate,()=>{
-//     if(messagesStore.chatRounds!=lastChatRound){
-//     dealwithWebsocket({
-//         "messages":messagesStore.getRecentMessages(63,true),
-//         "chatRounds":messagesStore.chatRounds
-//     })
-//     lastChatRound=messagesStore.chatRounds
-// }
-// }
-// )
 
 
 function getPrompt() {
@@ -294,9 +283,15 @@ function getPrompt() {
         ElNotification({title: '已获取所有提示',type: 'warning',duration: 3000})
     }
 }
-
-
+watch(() => messagesStore.messages, (newValue, oldValue)=>{
+if(messagesStore.messages.length==0){
+    getPromptTimes.value=0;
+        const initMessageId = messagesStore.newMessage(false)
+        messagesStore.loadMessage(initMessageId, openRemark);
+}
+},{immediate:true})
 onMounted(() => {
+ 
     dealwithWebsocket({
         "messages":messagesStore.getRecentMessages(63,true),
         "chatRounds":messagesStore.chatRounds

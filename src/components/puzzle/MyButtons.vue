@@ -10,7 +10,7 @@
     <img class="w-6 sendIcon" src="@/assets/发送.svg"></img>
 </button>
 </div>
-<ElButton @click="refreshPage" size="large" icon="refresh">再来一次</ElButton>"
+<ElButton @click="refreshPage" size="large" icon="refresh">再来一次</ElButton>
 <div class="flex flex-row items-center space-x-7">
     <ElButton  @click="showAnswer" size="large" :disabled="isDisabld">
         查看汤底
@@ -45,7 +45,7 @@ watch(haveLoad,()=>{
 
 })
 function refreshPage(){
-    router.go(0)
+    messagesStore.refresh()
 }
 function submitRate(){
     showRate.value=false
